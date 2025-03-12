@@ -48,7 +48,7 @@ const styles = {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
     padding: 20,
   },
   logo: {
@@ -65,6 +65,7 @@ const styles = {
     paddingLeft: 10,
     marginBottom: 15,
     fontSize: 16,
+    backgroundColor: "#fff",
   },
   button: {
     width: "100%",
