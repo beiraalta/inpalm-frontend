@@ -1,13 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useRouter } from "expo-router";
 
 export default function HomeScreen() {
   return (
@@ -22,33 +16,49 @@ export default function HomeScreen() {
   );
 }
 
+const buttons = [
+  { title: "Checklists", icon: "checkbox", url: "/checklists" },
+  { title: "Pendências", icon: "time", url: "/pendings" },
+  { title: "Usuários", icon: "person", url: "/users" },
+  { title: "Grupos", icon: "people", url: "/groups" },
+] as const;
+
 export function GridScreen() {
-  const buttons = [
-    { title: "Checklists", icon: "checkbox" },
-    { title: "Pendências", icon: "time" },
-    { title: "Usuários", icon: "person" },
-    { title: "Grupos", icon: "people" },
-  ];
+  const router = useRouter();
 
   return (
-    <ScrollView contentContainerStyle={styles.gridContainer}>
+    <>
       <View style={styles.row}>
-        {buttons.slice(0, 2).map((button, index) => (
-          <GridButton key={index} title={button.title} icon={button.icon} />
+        {buttons.slice(0, 2).map((button) => (
+          <GridButton
+            title={button.title}
+            icon={button.icon}
+            key={button.title}
+            onClick={() => {
+              router.navigate(button.url);
+            }}
+          />
         ))}
       </View>
       <View style={styles.row}>
-        {buttons.slice(2, 4).map((button, index) => (
-          <GridButton key={index + 2} title={button.title} icon={button.icon} />
+        {buttons.slice(2, 4).map((button) => (
+          <GridButton
+            title={button.title}
+            icon={button.icon}
+            key={button.title}
+            onClick={() => {
+              router.navigate(button.url);
+            }}
+          />
         ))}
       </View>
-    </ScrollView>
+    </>
   );
 }
 
-const GridButton = ({ title, icon }) => {
+const GridButton = ({ title, icon, onClick }) => {
   return (
-    <TouchableOpacity style={styles.gridButton}>
+    <TouchableOpacity style={styles.gridButton} onPress={onClick}>
       <Ionicons name={icon} size={28} color="black" />
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
@@ -57,29 +67,22 @@ const GridButton = ({ title, icon }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#f5f5f5",
     padding: 20,
   },
   logo: {
     width: 250,
     height: 120,
-    marginBottom: 20,
-  },
-  gridContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    paddingVertical: 20,
+    marginBottom: 40,
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     width: "100%",
   },
   gridButton: {
-    width: "50%",
+    width: "40%",
     aspectRatio: 1,
     backgroundColor: "#fff",
     borderRadius: 10,
