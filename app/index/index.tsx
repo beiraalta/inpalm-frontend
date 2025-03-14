@@ -7,7 +7,7 @@ export default function HomeScreen() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/images/inpalm-banner.png")}
+        source={require("../../assets/images/inpalm-banner.png")}
         style={styles.logo}
         resizeMode="contain"
       />

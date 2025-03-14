@@ -5,19 +5,20 @@ const initialUsers = [
   { id: 2, name: "Jane Smith" },
 ];
 
-const UsersScreen = () => {
+const Screen = () => {
   return (
     <CrudComponent
       data={initialUsers}
-      title="Pendências"
+      title="Usuários"
       itemKey="id"
       onItemAdd={(items) => ({
         id: items.length + 1,
-        name: `Pendência ${items.length + 1}`,
+        name: `Usuário ${items.length + 1}`,
       })}
-      onItemDelete={(id) => console.log("Pendência removida:", id)}
-    />
+      onItemDelete={(id) => console.log("Usuário removido:", id)}
+    >
+    </CrudComponent>
   );
 };
 
-export default UsersScreen;
+export default Screen;

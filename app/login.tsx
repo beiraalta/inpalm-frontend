@@ -7,8 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useRouter } from "expo-router";
 
-const LoginScreen = () => {
+export default function Screen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
       {/* Logo Image */}
@@ -30,7 +33,7 @@ const LoginScreen = () => {
 
       {/* Authenticate Button */}
       <Button
-        onPress={() => console.log("Authenticate Pressed")}
+        onPress={() => router.navigate("/")}
         style={styles.button}
         title="Autenticar"
       />
@@ -41,11 +44,10 @@ const LoginScreen = () => {
       </TouchableOpacity>
     </View>
   );
-};
+}
 
 const styles = {
   container: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#f5f5f5",
@@ -77,5 +79,3 @@ const styles = {
     textDecorationLine: "underline",
   },
 };
-
-export default LoginScreen;

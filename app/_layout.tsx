@@ -7,17 +7,13 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
-      <ScrollView style={styles.container}>
-        <Stack>
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="checklists" options={{ title: "Checklists" }} />
-          <Stack.Screen name="pendings" options={{ title: "Pendências" }} />
-          <Stack.Screen name="groups" options={{ title: "Grupos" }} />
-          <Stack.Screen name="users" options={{ title: "Usuários" }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ScrollView>
+    <ScrollView style={styles.container}>
+      <Stack>
+        <Stack.Screen name="login" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" options={{ headerShown: false }} />
+      </Stack>
+    </ScrollView>
   );
 }
 

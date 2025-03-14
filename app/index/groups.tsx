@@ -5,7 +5,7 @@ const initialUsers = [
   { id: 2, name: "Jane Smith" },
 ];
 
-const UsersScreen = () => {
+const Screen = () => {
   return (
     <CrudComponent 
       data={initialUsers}
@@ -17,4 +17,4 @@ const UsersScreen = () => {
   );
 };
 
-export default UsersScreen;
+export default Screen;
