@@ -1,9 +1,9 @@
 import { Redirect, Stack } from "expo-router";
 
 export default function RootLayout() {
-  const isUnauthorized = false;
+  const isAuthorized = true;
 
-  if (isUnauthorized) {
+  if (!isAuthorized) {
     return <Redirect href="/login" />
   }
 
