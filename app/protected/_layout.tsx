@@ -13,7 +13,7 @@ export default function RootLayout() {
       <Stack.Screen name="checklists" options={{ title: "Checklists" }} />
       <Stack.Screen name="pendings" options={{ title: "Pendências" }} />
       <Stack.Screen name="groups" options={{ title: "Grupos" }} />
-      <Stack.Screen name="users" options={{ title: "Usuários" }} />
+      <Stack.Screen name="users" options={{ headerShown: false }} />
     </Stack>
   );
 }

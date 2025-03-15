@@ -17,10 +17,10 @@ export default function HomeScreen() {
 }
 
 const buttons = [
-  { title: "Checklists", icon: "checkbox", url: "/checklists" },
-  { title: "Pendências", icon: "time", url: "/pendings" },
-  { title: "Usuários", icon: "person", url: "/users" },
-  { title: "Grupos", icon: "people", url: "/groups" },
+  { title: "Checklists", icon: "checkbox", url: "/protected/checklists" },
+  { title: "Pendências", icon: "time", url: "/protected/pendings" },
+  { title: "Usuários", icon: "person", url: "/protected/users" },
+  { title: "Grupos", icon: "people", url: "/protected/groups" },
 ] as const;
 
 export function GridScreen() {

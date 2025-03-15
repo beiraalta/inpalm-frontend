@@ -1,3 +1,4 @@
+import { globalStyles } from "../constants/styles";
 import React from "react";
 import {
   Button,
@@ -13,23 +14,23 @@ export default function Screen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
+    <View style={[globalStyles.container, globalStyles.containerBgColor]}>
       {/* Logo Image */}
       <Image
         source={require("../assets/images/inpalm-banner.png")}
-        style={styles.logo}
+        style={globalStyles.imgBanner}
         resizeMode="contain"
       />
 
       {/* Email Input */}
       <TextInput
         placeholder="E-mail"
-        style={styles.input}
+        style={globalStyles.inputLogin}
         keyboardType="email-address"
       />
 
       {/* Password Input */}
-      <TextInput placeholder="Senha" style={styles.input} secureTextEntry />
+      <TextInput placeholder="Senha" style={globalStyles.inputLogin} secureTextEntry />
 
       {/* Authenticate Button */}
       <Button

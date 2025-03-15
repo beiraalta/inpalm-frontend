@@ -1,24 +1,15 @@
 import CrudComponent from "@/components/crud";
 
-const initialUsers = [
-  { id: 1, name: "John Doe" },
-  { id: 2, name: "Jane Smith" },
-];
-
-const Screen = () => {
+export default function Screen() {
   return (
     <CrudComponent
-      data={initialUsers}
-      title="Usuários"
       itemKey="id"
-      onItemAdd={(items) => ({
-        id: items.length + 1,
-        name: `Usuário ${items.length + 1}`,
-      })}
-      onItemDelete={(id) => console.log("Usuário removido:", id)}
-    >
-    </CrudComponent>
+      itemKeys={["name", "email"]}
+      itemNames={["Name", "E-mail"]}
+      title="Usuários"
+      urlForm="/protected/users/form"
+      urlGet="/accounts/"
+      urlDelete="/accounts/"
+    />
   );
-};
-
-export default Screen;
+}
