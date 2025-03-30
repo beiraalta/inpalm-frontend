@@ -1,6 +1,6 @@
 import { globalStyles } from "@/constants/styles";
 import FormComponent from "@/components/crud/form";
-import useFormData from "@/hooks/useFormData";
+import useFormData from "@/hooks/form-data";
 import React, { useEffect, useState } from "react";
 import { Text, TextInput } from "react-native";
 import { useLocalSearchParams } from "expo-router";

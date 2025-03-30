@@ -16,6 +16,7 @@ export type CrudProps = Readonly<{
   itemKey: any;
   itemKeys: any[];
   itemNames: string[];
+  loadItems: any;
   title: string;
   urlForm: string;
   urlGet: string;
@@ -39,17 +40,8 @@ export default function CrudComponent(props: CrudProps): ReactNode {
   async function initItems() {
     setIsLoad(true);
     try {
-      const dummy = [
-        { id: 1, name: "John Doe", email: "doe@gmail.com", secret: 123 },
-        { id: 2, name: "Jane Smith", email: "jane@hotmail.com", secret: 123 },
-      ];
-      // const projects = await vtService.get_projects("test");
-      // console.log(projects);
-      // const names = projects.map((project) => {
-      //   return project.name;
-      // });
-      // console.log(names);
-      setItems(dummy);
+      const items = []; //await props.loadItems();
+      setItems(items);
     }
     finally {
       setIsLoad(false);

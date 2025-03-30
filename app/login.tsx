@@ -1,6 +1,5 @@
-import { globalStyles } from "../constants/styles";
-import React from "react";
 import {
+  ActivityIndicator,
   Button,
   Image,
   Text,
@@ -8,10 +7,39 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Authorizer } from "@/utils/authorizer";
+import { globalStyles } from "../constants/styles";
+import { OmniAuth } from "@/services/omniauth";
 import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import SHA512 from "crypto-js/sha512";
 
 export default function Screen() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState("thiago.mennezes@gmail.com");
+  const [password, setPassword] = useState("12345");
   const router = useRouter();
+
+  async function authenticate() {
+    setIsLoading(true);
+    try {
+      const omniAuth = new OmniAuth();
+      const encrypted_password = SHA512(password).toString();
+      const authToken = await omniAuth.authenticate(user, encrypted_password);
+      Authorizer.saveToken(authToken);
+    } catch (error) {
+      alert(error);
+      setUser("");
+      setPassword("");
+    } finally {
+      router.navigate("/");
+      setIsLoading(false);
+    }
+  }
+
+  if (isLoading) {
+    return <ActivityIndicator size="large"></ActivityIndicator>;
+  }
 
   return (
     <View style={[globalStyles.container, globalStyles.containerBgColor]}>
@@ -24,17 +52,23 @@ export default function Screen() {
 
       {/* Email Input */}
       <TextInput
+        keyboardType="email-address"
+        onChangeText={setUser}
         placeholder="E-mail"
         style={globalStyles.inputLogin}
-        keyboardType="email-address"
       />
 
       {/* Password Input */}
-      <TextInput placeholder="Senha" style={globalStyles.inputLogin} secureTextEntry />
+      <TextInput
+        onChangeText={setPassword}
+        placeholder="Senha"
+        secureTextEntry
+        style={globalStyles.inputLogin}
+      />
 
       {/* Authenticate Button */}
       <Button
-        onPress={() => router.navigate("/")}
+        onPress={() => authenticate()}
         style={styles.button}
         title="Autenticar"
       />

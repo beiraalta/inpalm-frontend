@@ -1,9 +1,31 @@
-import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import { ActivityIndicator } from "react-native";
+import { Authorizer } from "@/utils/authorizer";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { Redirect, useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
 
 export default function HomeScreen() {
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const _setIsAuthorized = async () => {
+      const _isAuthorized = await Authorizer.isAuthorized();
+      setIsAuthorized(_isAuthorized);
+      setIsLoading(false);
+    };
+    _setIsAuthorized();
+  }, []);
+
+  if (isLoading) {
+    return <ActivityIndicator size="large"></ActivityIndicator>;
+  }
+
+  if (!isAuthorized) {
+    return <Redirect href="/login" />;
+  }
+
   return (
     <View style={styles.container}>
       <Image
