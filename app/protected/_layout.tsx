@@ -4,7 +4,7 @@ export default function RootLayout() {
   const isAuthorized = true;
 
   if (!isAuthorized) {
-    return <Redirect href="/login" />
+    return <Redirect href="/login" />;
   }
 
   return (
@@ -13,7 +13,7 @@ export default function RootLayout() {
       <Stack.Screen name="checklists" options={{ title: "Checklists" }} />
       <Stack.Screen name="pendings" options={{ title: "Pendências" }} />
       <Stack.Screen name="groups" options={{ title: "Grupos" }} />
-      <Stack.Screen name="users" options={{ headerShown: false }} />
+      <Stack.Screen name="accounts" options={{ headerShown: false }} />
     </Stack>
   );
 }

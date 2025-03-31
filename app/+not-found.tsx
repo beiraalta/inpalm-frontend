@@ -1,8 +1,5 @@
-import { Text } from 'react-native';
-
+import { Text } from "react-native";
 
 export default function NotFoundScreen() {
-  return (
-    <Text>Not Found</Text>
-  );
+  return <Text>Not Found</Text>;
 }

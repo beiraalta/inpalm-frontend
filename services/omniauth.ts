@@ -1,10 +1,15 @@
-import { Account } from "./types";
-import { REACT_APP_AUTH_SERVICE_URL } from "../constants/settings";
+import { Account, APIResponse, T } from "./types";
+import { REACT_APP_OMNIAUTH_URL } from "../constants/settings";
 import AbstractService from "./abstract";
 
 export class OmniAuth extends AbstractService {
   constructor() {
-    super(REACT_APP_AUTH_SERVICE_URL);
+    super(REACT_APP_OMNIAUTH_URL);
+  }
+
+  async addAccount(account: Account): Promise<Account> {
+    const options = { json: account };
+    return await this.post("./accounts/", options);
   }
 
   async authenticate(user: string, password: string): Promise<string> {
@@ -15,8 +20,17 @@ export class OmniAuth extends AbstractService {
     return authToken;
   }
 
-  async getAccounts(urlSearchParams: any): Promise<Account[]> {
+  async editAccount(id: string, account: Account): Promise<Account> {
+    const options = { json: account };
+    return await this.put(`./accounts/${id}/`, options);
+  }
+
+  async findAccounts(urlSearchParams?: any): Promise<Account[]> {
     return await this.get("./accounts/", urlSearchParams);
+  }
+
+  async removeAccount(ids?: string[]): Promise<APIResponse<T>> {
+    return await this.removeItems("./accounts/", ids);
   }
 
   async verifyToken(): Promise<boolean> {

@@ -1,7 +1,7 @@
-import { ActivityIndicator } from "react-native";
 import { Authorizer } from "@/utils/authorizer";
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
+import Spinner from "@/components/spinner";
 
 export default function Screen() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -17,7 +17,7 @@ export default function Screen() {
   }, []);
 
   if (isLoading) {
-    return <ActivityIndicator size="large"></ActivityIndicator>;
+    return <Spinner />;
   }
 
   return <Redirect href={isAuthorized ? "/protected" : "/login"} />;

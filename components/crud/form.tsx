@@ -1,18 +1,13 @@
 import { globalStyles } from "@/constants/styles";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { ReactNode } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
+import React, { ReactNode } from "react";
+import Spinner from "../spinner";
 
 export type FormProps = Readonly<{
   children: ReactNode;
   isEditing: boolean;
-  isLoad: any;
+  isLoading: any;
   title: string;
   onSubmit: any;
 }>;
@@ -20,18 +15,23 @@ export type FormProps = Readonly<{
 export default function FormComponent(props: FormProps) {
   const router = useRouter();
 
-  if (props.isLoad) {
-    return <ActivityIndicator size="large"></ActivityIndicator>;
+  if (props.isLoading) {
+    return <Spinner />;
   }
 
   return (
     <View style={styles.container}>
-      <Text style={globalStyles.textTitle}>{props.isEditing ? "Editar " : "Adicionar"} {props.title}</Text>
+      <Text style={globalStyles.textTitle}>
+        {props.isEditing ? "Editar " : "Adicionar"} {props.title}
+      </Text>
       {props.children}
       <TouchableOpacity style={styles.submitButton} onPress={props.onSubmit}>
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.cancelButton} onPress={() => router.back()}>
+      <TouchableOpacity
+        style={styles.cancelButton}
+        onPress={() => router.back()}
+      >
         <Text style={styles.cancelText}>Cancelar</Text>
       </TouchableOpacity>
     </View>

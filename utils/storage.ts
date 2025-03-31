@@ -5,9 +5,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 export class Storage {
   static async getItem(key: string) {
     if (Platform.OS === "web") {
-      return await AsyncStorage.getItem(key) ?? undefined;
+      return (await AsyncStorage.getItem(key)) ?? undefined;
     }
-    return await SecureStore.getItemAsync(key) ?? undefined;
+    return (await SecureStore.getItemAsync(key)) ?? undefined;
   }
 
   static async removeItem(key: string) {

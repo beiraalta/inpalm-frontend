@@ -7,11 +7,14 @@ const initialUsers = [
 
 const Screen = () => {
   return (
-    <CrudComponent 
+    <CrudComponent
       data={initialUsers}
       title="Grupos"
-      itemKey="id"
-      onItemAdd={(items) => ({ id: items.length + 1, name: `Grupo ${items.length + 1}` })}
+      targetKey="id"
+      onItemAdd={(items) => ({
+        id: items.length + 1,
+        name: `Grupo ${items.length + 1}`,
+      })}
       onItemDelete={(id) => console.log("Grupo removido:", id)}
     />
   );

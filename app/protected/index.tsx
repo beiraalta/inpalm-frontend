@@ -1,9 +1,9 @@
-import { ActivityIndicator } from "react-native";
 import { Authorizer } from "@/utils/authorizer";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
+import Spinner from "@/components/spinner";
 
 export default function HomeScreen() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -19,7 +19,7 @@ export default function HomeScreen() {
   }, []);
 
   if (isLoading) {
-    return <ActivityIndicator size="large"></ActivityIndicator>;
+    return <Spinner />;
   }
 
   if (!isAuthorized) {
@@ -41,7 +41,7 @@ export default function HomeScreen() {
 const buttons = [
   { title: "Checklists", icon: "checkbox", url: "/protected/checklists" },
   { title: "Pendências", icon: "time", url: "/protected/pendings" },
-  { title: "Usuários", icon: "person", url: "/protected/users" },
+  { title: "Usuários", icon: "person", url: "/protected/accounts" },
   { title: "Grupos", icon: "people", url: "/protected/groups" },
 ] as const;
 

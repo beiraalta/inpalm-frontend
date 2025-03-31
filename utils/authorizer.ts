@@ -12,7 +12,7 @@ export class Authorizer {
 
   static async isAuthorized() {
     const omniAuth = new OmniAuth();
-    omniAuth.initialize();
+    await omniAuth.initialize();
     const token = await Storage.getItem("authToken");
     const verification = await omniAuth.verifyToken();
     return token !== undefined && verification === true;

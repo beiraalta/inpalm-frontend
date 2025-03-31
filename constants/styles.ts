@@ -32,7 +32,7 @@ export const globalStyles = {
   },
   textForm: {
     fontWeight: "bold",
-  },  
+  },
   textTitle: {
     fontSize: 22,
     fontWeight: "bold",

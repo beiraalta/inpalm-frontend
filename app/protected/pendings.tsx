@@ -10,7 +10,7 @@ const Screen = () => {
     <CrudComponent
       data={initialUsers}
       title="Pendências"
-      itemKey="id"
+      targetKey="id"
       onItemAdd={(items) => ({
         id: items.length + 1,
         name: `Pendência ${items.length + 1}`,

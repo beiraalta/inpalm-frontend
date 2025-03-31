@@ -1,5 +1,4 @@
 import {
-  ActivityIndicator,
   Button,
   Image,
   Text,
@@ -13,6 +12,7 @@ import { OmniAuth } from "@/services/omniauth";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import SHA512 from "crypto-js/sha512";
+import Spinner from "@/components/spinner";
 
 export default function Screen() {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +38,7 @@ export default function Screen() {
   }
 
   if (isLoading) {
-    return <ActivityIndicator size="large"></ActivityIndicator>;
+    return <Spinner />;
   }
 
   return (

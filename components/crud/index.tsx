@@ -1,6 +1,5 @@
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   StyleSheet,
   Text,
@@ -9,65 +8,69 @@ import {
   View,
 } from "react-native";
 import { globalStyles } from "@/constants/styles";
-import React, { ReactNode, useEffect, useState } from "react";
+import { T } from "@/services/types";
 import { useRouter } from "expo-router";
+import React, { ReactNode, useEffect, useState } from "react";
+import Spinner from "../spinner";
 
 export type CrudProps = Readonly<{
-  itemKey: any;
+  targetKey: string;
   itemKeys: any[];
   itemNames: string[];
-  loadItems: any;
+  // onAddItem: (item: T) => Promise<T>;
+  // onEditItem: (id: string, item: T) => Promise<T>;
+  onGetItems: () => Promise<T>;
+  onRemoveItems: (ids: string[]) => Promise<T>;
   title: string;
   urlForm: string;
-  urlGet: string;
-  urlDelete: string;
 }>;
 
 export default function CrudComponent(props: CrudProps): ReactNode {
-  const [isLoad, setIsLoad] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
   const [searchText, setSearchText] = useState("");
-
   const router = useRouter();
+  const targetKey = props.targetKey || "id";
 
   // Filter items based on search query
   const filteredItems = items.filter((item) =>
     props.itemKeys.some((key) =>
-      item[key]?.toString().toLowerCase().includes(searchText.toLowerCase())
-    )
+      item[key]?.toString().toLowerCase().includes(searchText.toLowerCase()),
+    ),
   );
-
-  async function initItems() {
-    setIsLoad(true);
-    try {
-      const items = []; //await props.loadItems();
-      setItems(items);
-    }
-    finally {
-      setIsLoad(false);
-    }
-  }
 
   function openAddForm() {
     router.navigate(props.urlForm);
   }
 
   function openEditForm(target: string) {
-    router.navigate(`${props.urlForm}/?${props.itemKey}=${target}`);
+    router.navigate(`${props.urlForm}/?${props.targetKey}=${target}`);
   }
 
-  function deleteItem(target: string) {
-    if (confirm("Você deseja remover este registro? Esta operação não pode ser desfeita!")) {
-      setItems(items.filter((item: any) => item[props.itemKey] !== target));
+  async function removeItem(target: string) {
+    if (
+      confirm(
+        "Você deseja remover este registro? Esta operação não pode ser desfeita!",
+      )
+    ) {
+      setIsLoading(true);
+      await props.onRemoveItems([target]);
+      setItems(items.filter((item: any) => item[targetKey] !== target));
+      setIsLoading(false);
     }
   }
 
   useEffect(() => {
-    initItems();
+    const _setItems = async () => {
+      const items = await props.onGetItems();
+      setItems(items);
+      setIsLoading(false);
+    };
+    _setItems();
   }, []);
 
-  if (isLoad) {
-    return <ActivityIndicator size="large"></ActivityIndicator>;
+  if (isLoading) {
+    return <Spinner />;
   }
 
   return (
@@ -89,7 +92,7 @@ export default function CrudComponent(props: CrudProps): ReactNode {
       {/* List */}
       <FlatList
         data={filteredItems}
-        keyExtractor={(item) => item[props.itemKey]?.toString()}
+        keyExtractor={(item) => item[targetKey]?.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
             <View>
@@ -104,13 +107,13 @@ export default function CrudComponent(props: CrudProps): ReactNode {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.editButton}
-                  onPress={() => openEditForm(item[props.itemKey])}
+                  onPress={() => openEditForm(item[targetKey])}
                 >
                   <Text style={styles.buttonText}>Editar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.deleteButton}
-                  onPress={() => deleteItem(item[props.itemKey])}
+                  onPress={() => removeItem(item[targetKey])}
                 >
                   <Text style={styles.buttonText}>Remover</Text>
                 </TouchableOpacity>

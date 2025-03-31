@@ -4,7 +4,7 @@ export type Account = {
   name: string;
   email: string;
   password: string | null;
-}
+};
 
 export type APIResponse<T> = {
   message: string;
@@ -16,4 +16,4 @@ export type Records<T> = {
   records: T[];
   filtered: number;
   total: number;
-}
+};

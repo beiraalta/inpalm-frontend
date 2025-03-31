@@ -32,7 +32,7 @@ export default function Screen() {
   return (
     <FormComponent
       isEditing={isEditing}
-      isLoad={isLoad}
+      isLoading={isLoad}
       onSubmit={onSubmit}
       title="Usuário"
     >
