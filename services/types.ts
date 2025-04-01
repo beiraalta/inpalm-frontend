@@ -2,7 +2,7 @@ export type T = any;
 
 export type Account = {
   name: string;
-  email: string;
+  user: string;
   password: string | null;
 };
 

@@ -14,12 +14,10 @@ import React, { ReactNode, useEffect, useState } from "react";
 import Spinner from "../spinner";
 
 export type CrudProps = Readonly<{
-  targetKey: string;
+  targetKey?: string;
   itemKeys: any[];
   itemNames: string[];
-  // onAddItem: (item: T) => Promise<T>;
-  // onEditItem: (id: string, item: T) => Promise<T>;
-  onGetItems: () => Promise<T>;
+  onGetItems: (urlSearchParams: any) => Promise<T>;
   onRemoveItems: (ids: string[]) => Promise<T>;
   title: string;
   urlForm: string;
@@ -30,7 +28,7 @@ export default function CrudComponent(props: CrudProps): ReactNode {
   const [items, setItems] = useState([]);
   const [searchText, setSearchText] = useState("");
   const router = useRouter();
-  const targetKey = props.targetKey || "id";
+  const targetKey = props.targetKey ?? "id";
 
   // Filter items based on search query
   const filteredItems = items.filter((item) =>

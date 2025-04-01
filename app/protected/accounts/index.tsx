@@ -6,19 +6,9 @@ import CrudComponent from "@/components/crud";
 export default function Screen() {
   const omniAuth = useMemo(() => new OmniAuth(), []);
 
-  // async function onAddItem(item: Account) {
-  //   await omniAuth.initialize();
-  //   return await omniAuth.addAccount(item);
-  // }
-
-  // async function onEditItem(id: string, item: Account) {
-  //   await omniAuth.initialize();
-  //   return omniAuth.editAccount(id, item);
-  // }
-
-  async function onGetItems() {
+  async function onGetItems(urlSearchParams: any = {}) {
     await omniAuth.initialize();
-    return await omniAuth.findAccounts();
+    return await omniAuth.findAccounts(urlSearchParams);
   }
 
   async function onRemoveItems(ids: string[]) {
@@ -28,11 +18,8 @@ export default function Screen() {
 
   return (
     <CrudComponent
-      // targetKey="id"
       itemKeys={["name", "user"]}
       itemNames={["Name", "E-mail"]}
-      // onAddItem={onAddItem}
-      // onEditItem={onEditItem}
       onGetItems={onGetItems}
       onRemoveItems={onRemoveItems}
       title="Usuários"

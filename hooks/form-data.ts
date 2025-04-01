@@ -1,34 +1,20 @@
 import { useState } from "react";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
-const useFormData = (initialState = {}) => {
-  const [formData, setFormData] = useState(initialState);
-  const [isEditing, setIsEditing] = useState(!!useLocalSearchParams().id);
-  const [isLoad, setIsLoad] = useState(false);
-  const router = useRouter();
+export default function useFormData(initialFormData = {}, targetKey= "id") {
+  const [formData, setFormData] = useState(initialFormData);
+  const [isEditing, setIsEditing] = useState(!!useLocalSearchParams()[targetKey]);
+  const [targetValue, setTargetValue] = useState(useLocalSearchParams()[targetKey]);
 
-  const onChange = (key: string, value: string) => {
+  function onChange(key: string, value: string) {
     setFormData((prevData) => ({ ...prevData, [key]: value }));
-  };
-
-  const onSubmit = async () => {
-    setIsLoad(true);
-    try {
-      console.log("Submitting Form Data:", formData);
-      router.back();
-    } finally {
-      setIsLoad(false);
-    }
-  };
+  }
 
   return {
     formData,
     isEditing,
-    isLoad,
-    onChange,
-    onSubmit,
     setFormData,
+    targetValue,
+    onChange,
   };
-};
-
-export default useFormData;
+}
