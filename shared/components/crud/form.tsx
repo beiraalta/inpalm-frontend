@@ -30,7 +30,8 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
     } 
     setCrud((previous) => ({ ...previous, formData: record }));
     setCrud((previous) => ({ ...previous, isEditing: isEditing }));
-  }, []);
+    console.log(crud.formData);
+  }, [crud.onAdd, crud.onEdit]);
 
   async function onSubmit() {
     setIsLoading(true);
@@ -51,6 +52,7 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
           items: [record, ...previous.items],
         }));        
       }
+      setCrud((previous) => ({ ...previous, formData: {} }));
       router.back();
     } catch(error) {
       alert((error as Error)?.message || "An unknown error occurred.");

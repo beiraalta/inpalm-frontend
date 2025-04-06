@@ -4,10 +4,9 @@ import { globalStyles } from "@/shared/constants/styles";
 import { OmniAuth } from "@/shared/services/omniauth";
 import { Text, TextInput } from "react-native";
 import { useAtom } from "jotai";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 export default function Screen() {
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [crud, setCrud] = useAtom(crudAtom);
   const omniAuth = useMemo(() => new OmniAuth(), []);
 
@@ -18,15 +17,25 @@ export default function Screen() {
 
   function setOnAdd() {
     setCrud((previous) => ({ ...previous, onAdd: async (formData) => {
+      if (formData.password !== formData.confirmPassword) {
+        throw Error("A senha e a confirmação não batem. Corrija, por favor.");
+      }      
       await omniAuth.initialize();
-      return await omniAuth.addAccount(formData);
+      return await omniAuth.addAccount({
+        name: formData.name,
+        user: formData.user,
+        password: formData.password,
+      });
     }}));
   }
 
   function setOnEdit() {
     setCrud((previous) => ({ ...previous, onEdit: async (targetValue, formData) => {
       await omniAuth.initialize();
-      return await omniAuth.editAccount(targetValue, formData);
+      return await omniAuth.editAccount(targetValue, {
+        name: formData.name,
+        user: formData.user,
+      });
     }}));
   }
 
@@ -69,12 +78,12 @@ export default function Screen() {
 
           <Text style={globalStyles.textForm}>Confirmação de Senha</Text>
           <TextInput
-            onChangeText={(text) => setConfirmPassword(text)}
+            onChangeText={(text) => crud.onChangeFormData("confirmPassword", text)}
             placeholder="Confirme a senha do usuário"
             placeholderTextColor="gray"
             secureTextEntry
             style={globalStyles.inputForm}
-            value={confirmPassword}
+            value={crud.formData.confirmPassword}
           />
         </>
       )}

@@ -22,30 +22,19 @@ export function CrudComponent(props: CrudComponentProps) {
   const [customFilter, setCustomFilter] = useState("");
   const router = useRouter();
   const targetKey = props.targetKey ?? "id";
-  const filteredItems = crud.items.filter((item: any) =>
-    props.itemKeys.some((key) =>
-      item[key]?.toString().toLowerCase().includes(customFilter.toLowerCase())
-    )
-  );
+  const filteredItems = crud.items.filter((item: any) => {
+    if (customFilter.length >= 3) {
+      return props.itemKeys.some((key) =>
+        item[key]?.toString().toLowerCase().includes(customFilter.toLowerCase())
+      )
+    }
+    return crud.items;
+  });
 
   useEffect(() => {
-    findItems();
+    onLoad();
     setOnChangeFormData();
-  }, []);
-
-  async function findItems(searchParams: any = {}) {
-    setIsLoading(true);
-    try {
-      const records = await crud.onFind(searchParams);
-      setCrud((previous) => ({ ...previous, items: records }));
-    }
-    catch (error) {
-      alert((error as Error)?.message || "An unknown error occurred.");
-    }
-    finally { 
-      setIsLoading(false);
-    }
-  }
+  }, [crud.onFind, crud.onRemove]);
 
   function onClickAddButton() {
     if (typeof props.urlForm !== 'string') {
@@ -79,6 +68,20 @@ export function CrudComponent(props: CrudComponentProps) {
         ...previous,
         items: previous.items.filter((item) => item[targetKey] !== targetValue),
       }));
+      setIsLoading(false);
+    }
+  }
+
+  async function onLoad(searchParams: any = {}) {
+    setIsLoading(true);
+    try {
+      const records = await crud.onFind(searchParams);
+      setCrud((previous) => ({ ...previous, items: records.toSorted((lhs, rhs) => rhs.updated_at.localeCompare(lhs.updated_at)) }));
+    }
+    catch (error) {
+      console.log((error as Error)?.message || "An unknown error occurred.");
+    }
+    finally { 
       setIsLoading(false);
     }
   }
