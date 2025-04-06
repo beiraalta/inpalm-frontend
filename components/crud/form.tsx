@@ -1,60 +1,59 @@
+import { crudAtom } from "./atom";
 import { globalStyles } from "@/constants/styles";
+import { isLoadingAtom, Spinner } from "../spinner";
+import { ReactNode, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { T } from "@/services/types";
-import { useRouter } from "expo-router";
-import React, { ReactNode, useEffect, useState } from "react";
-import Spinner from "../spinner";
-import useFormData from "@/hooks/form-data";
+import { useAtom } from "jotai";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
-export type FormProps = Readonly<{
+export type CrudFormComponentProps = Readonly<{
   children: ReactNode;
-  formData: T;
-  onAddItem: (item: T) => Promise<T>;
-  onEditItem: (targetKey: string, targetValue: any, item: T) => Promise<T>;
-  onGetItems: (urlSearchParams: {}) => Promise<T[]>;
   targetKey?: string;
   title: string;
 }>;
 
-export default function FormComponent(props: FormProps) {
+export function CrudFormComponent(props: CrudFormComponentProps) {
   const targetKey = props.targetKey ?? "id";
+  const targetValue = useLocalSearchParams()[targetKey];
+  const isEditing = !!targetValue;
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
-  const {
-    formData,
-    isEditing,
-    setFormData,
-    targetValue,
-  } = useFormData(props.formData, targetKey);
+  const [crud, setCrud] = useAtom(crudAtom);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
+  useEffect(() => {
+    let record = {};
+    if (isEditing) {
+      const records = crud.items.filter((item: any) =>
+        item[targetKey]?.toString().toLowerCase().includes(targetValue)
+      );
+      record = records[0];
+    } 
+    setCrud((previous) => ({ ...previous, formData: record }));
+  }, []);
 
   async function onSubmit() {
     setIsLoading(true);
     try {
       if (isEditing) {
-        await props.onEditItem(targetKey, targetValue, formData);
+        if (props.targetValue == undefined) {
+          throw new Error("targetValue is undefined");
+        }
+        const record = await crud.onEdit(targetKey, props.targetValue, crud.formData);
+
       } else {
-        await props.onAddItem(props.formData);
+        const record = await crud.onAdd(crud.formData);
+        setCrud((previous) => ({
+          ...previous,
+          items: [record, ...previous.items],
+        }));        
       }
+      router.back();
     } catch(error) {
-      alert(error.message);
+      alert((error as Error)?.message || "An unknown error occurred.");
     } finally {
       setIsLoading(false);
-      router.back();
     }
   }
-
-  useEffect(() => {
-    const _setFormData = async () => {
-      if (isEditing) {
-        const items = await props.onGetItems({ targetKey: targetValue });
-        const item = items[0];
-        setFormData(item);
-      }
-      setIsLoading(false);
-    };
-    _setFormData();
-  }, []);
 
   if (isLoading) {
     return <Spinner />;
@@ -79,7 +78,6 @@ export default function FormComponent(props: FormProps) {
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
   buttonText: { color: "#fff", fontWeight: "bold" },
   cancelButton: { alignItems: "center", padding: 10 },

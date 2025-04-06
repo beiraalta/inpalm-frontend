@@ -1,21 +1,15 @@
-import {
-  Button,
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Authorizer } from "@/utils/authorizer";
+import { Authorizer } from "@/shared/authorizer";
+import { Button, Image, Text, TextInput, TouchableOpacity, View, } from "react-native";
 import { globalStyles } from "../constants/styles";
+import { isLoadingAtom, Spinner } from "@/components/spinner";
 import { OmniAuth } from "@/services/omniauth";
+import { useAtom } from "jotai";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import SHA512 from "crypto-js/sha512";
-import Spinner from "@/components/spinner";
 
 export default function Screen() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const [user, setUser] = useState("thiago.mennezes@gmail.com");
   const [password, setPassword] = useState("12345");
   const router = useRouter();

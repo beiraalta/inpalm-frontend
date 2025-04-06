@@ -1,5 +1,5 @@
-import { APIResponse, Records, T } from "./types";
-import { Storage } from "@/utils/storage";
+import { APIResponse, Records, T } from "@/shared/custom_types";
+import { Storage } from "@/shared/storage";
 import ky, { KyInstance, Options } from "ky";
 
 export default class AbstractService {
@@ -21,7 +21,7 @@ export default class AbstractService {
       const apiResponse = await response.json<APIResponse<T>>();
       return apiResponse;
     } catch (error: any) {
-      throw this.handleError(error);
+      throw this.prepareError(error);
     }
   }
 
@@ -32,16 +32,7 @@ export default class AbstractService {
       const apiResponse = await response.json<APIResponse<Records<T>>>();
       return apiResponse?.data?.records;
     } catch (error: any) {
-      throw this.handleError(error);
-    }
-  }
-
-  async handleError(error: any): Promise<Error> {
-    if (error.response) {
-      const apiResponse: APIResponse<T> = await error.response.json();
-      return new Error(apiResponse.message);
-    } else {
-      return error;
+      throw this.prepareError(error);
     }
   }
 
@@ -59,7 +50,16 @@ export default class AbstractService {
       const apiResponse = await response.json<APIResponse<T>>();
       return apiResponse.data;
     } catch (error: any) {
-      throw this.handleError(error);
+      throw this.prepareError(error);
+    }
+  }
+
+  async prepareError(error: any): Promise<Error> {
+    if (error.response) {
+      const apiResponse: APIResponse<T> = await error.response.json();
+      return new Error(apiResponse.message);
+    } else {
+      return error;
     }
   }
 
@@ -69,15 +69,15 @@ export default class AbstractService {
       const apiResponse = await response.json<APIResponse<T>>();
       return apiResponse.data;
     } catch (error: any) {
-      throw this.handleError(error);
+      throw this.prepareError(error);
     }
   }
 
-  async removeItems(url: string, ids?: string[]): Promise<APIResponse<T>> {
-    const joined: string = ids?.join(",") ?? "";
+  async removeRecords(url: string, targetValues: number[] | string[]): Promise<APIResponse<T>> {
+    const joined: string = targetValues?.join(",") ?? "";
     if (!joined) {
       throw Error(
-        "Ops! Você não selecionou nenhum item para remover. Escolha pelo menos um 😉",
+        "Ops! Você não selecionou nenhum registro para remover. Escolha pelo menos um 😉",
       );
     }
     return await this.delete(`${url}${joined}/`);

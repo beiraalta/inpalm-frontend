@@ -1,27 +1,35 @@
-// import { Account } from "@/services/types";
 import { OmniAuth } from "@/services/omniauth";
-import { useMemo } from "react";
-import CrudComponent from "@/components/crud";
+import { useEffect, useMemo } from "react";
+import { crudAtom, CrudComponent } from "@/components/crud";
+import { useAtom } from "jotai";
 
 export default function Screen() {
+  const [crud, setCrud] = useAtom(crudAtom);
   const omniAuth = useMemo(() => new OmniAuth(), []);
 
-  async function onGetItems(urlSearchParams: any = {}) {
-    await omniAuth.initialize();
-    return await omniAuth.findAccounts(urlSearchParams);
+  useEffect(() => {
+    setOnFind();
+    setOnRemove();
+  }, []);
+
+  async function setOnFind() {
+    setCrud((previous) => ({ ...previous, onFind: async (searchParams) => {
+      await omniAuth.initialize();
+      return await omniAuth.findAccounts(searchParams);
+    }}));
   }
 
-  async function onRemoveItems(ids: string[]) {
-    await omniAuth.initialize();
-    return await omniAuth.removeAccount(ids);
+  async function setOnRemove() {
+    setCrud((previous) => ({ ...previous, onRemove: async (targetValues) => {
+      await omniAuth.initialize();
+      await omniAuth.removeAccounts(targetValues);
+    }}));
   }
 
   return (
     <CrudComponent
       itemKeys={["name", "user"]}
       itemNames={["Name", "E-mail"]}
-      onGetItems={onGetItems}
-      onRemoveItems={onRemoveItems}
       title="Usuários"
       urlForm="/protected/accounts/form"
     />

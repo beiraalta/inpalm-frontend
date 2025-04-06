@@ -1,4 +1,4 @@
-import { Account, APIResponse, T } from "./types";
+import { Account, APIResponse, T } from "@/shared/custom_types";
 import { REACT_APP_OMNIAUTH_URL } from "../constants/settings";
 import AbstractService from "./abstract";
 
@@ -20,17 +20,17 @@ export class OmniAuth extends AbstractService {
     return authToken;
   }
 
-  async editAccount(id: string, account: Account): Promise<Account> {
+  async editAccount(targetValue: string, account: Account): Promise<Account> {
     const options = { json: account };
-    return await this.put(`./accounts/${id}/`, options);
+    return await this.put(`./accounts/${targetValue}/`, options);
   }
 
   async findAccounts(urlSearchParams?: any): Promise<Account[]> {
     return await this.get("./accounts/", urlSearchParams);
   }
 
-  async removeAccount(ids?: string[]): Promise<APIResponse<T>> {
-    return await this.removeItems("./accounts/", ids);
+  async removeAccounts(targetValues: number[] | string[]): Promise<APIResponse<T>> {
+    return await this.removeRecords("./accounts/", targetValues);
   }
 
   async verifyToken(): Promise<boolean> {

@@ -1,16 +1,18 @@
-import { Authorizer } from "@/utils/authorizer";
+import { Authorizer } from "@/shared/authorizer";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import Spinner from "@/components/spinner";
+import { isLoadingAtom, Spinner } from "@/components/spinner";
+import { useAtom } from "jotai";
 
 export default function HomeScreen() {
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
   useEffect(() => {
     const _setIsAuthorized = async () => {
+      setIsLoading(true);
       const _isAuthorized = await Authorizer.isAuthorized();
       setIsAuthorized(_isAuthorized);
       setIsLoading(false);

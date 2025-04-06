@@ -1,11 +1,12 @@
-import { Authorizer } from "@/utils/authorizer";
+import { Authorizer } from "@/shared/authorizer";
 import { Redirect } from "expo-router";
+import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import Spinner from "@/components/spinner";
+import {isLoadingAtom, Spinner} from "@/components/spinner";
 
 export default function Screen() {
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
   useEffect(() => {
     const _setIsAuthorized = async () => {

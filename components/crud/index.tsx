@@ -1,72 +1,100 @@
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { crudAtom } from "./atom";
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
 import { globalStyles } from "@/constants/styles";
-import { T } from "@/services/types";
+import { isLoadingAtom, Spinner } from "../spinner";
+import { useAtom } from "jotai";
 import { useRouter } from "expo-router";
-import React, { ReactNode, useEffect, useState } from "react";
-import Spinner from "../spinner";
+import React, { useEffect, useState } from "react";
 
-export type CrudProps = Readonly<{
-  targetKey?: string;
+export { crudAtom } from "./atom";
+
+export type CrudComponentProps = Readonly<{
   itemKeys: any[];
   itemNames: string[];
-  onGetItems: (urlSearchParams: any) => Promise<T>;
-  onRemoveItems: (ids: string[]) => Promise<T>;
+  targetKey?: string;
   title: string;
   urlForm: string;
 }>;
 
-export default function CrudComponent(props: CrudProps): ReactNode {
-  const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([]);
-  const [searchText, setSearchText] = useState("");
+export function CrudComponent(props: CrudComponentProps) {
+  const [crud, setCrud] = useAtom(crudAtom);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
+  const [customFilter, setCustomFilter] = useState("");
   const router = useRouter();
   const targetKey = props.targetKey ?? "id";
-
-  // Filter items based on search query
-  const filteredItems = items.filter((item) =>
+  const filteredItems = crud.items.filter((item: any) =>
     props.itemKeys.some((key) =>
-      item[key]?.toString().toLowerCase().includes(searchText.toLowerCase()),
-    ),
+      item[key]?.toString().toLowerCase().includes(customFilter.toLowerCase())
+    )
   );
 
-  function openAddForm() {
+  useEffect(() => {
+    findItems();
+    setOnChangeFormData();
+  }, []);
+
+  async function findItems(searchParams: any = {}) {
+    setIsLoading(true);
+    try {
+      const records = await crud.onFind(searchParams);
+      setCrud((previous) => ({ ...previous, items: records }));
+    }
+    catch (error) {
+      alert((error as Error)?.message || "An unknown error occurred.");
+    }
+    finally { 
+      setIsLoading(false);
+    }
+  }
+
+  function onClickAddButton() {
+    if (typeof props.urlForm !== 'string') {
+      throw new Error("Invalid or missing 'urlForm'. Expected a non-empty string.");
+    }
     router.navigate(props.urlForm);
   }
 
-  function openEditForm(target: string) {
-    router.navigate(`${props.urlForm}/?${props.targetKey}=${target}`);
+  function onClickEditButton(targetValue: string) {
+    if (typeof props.urlForm !== 'string') {
+      throw new Error("Invalid or missing 'urlForm'. Expected a non-empty string.");
+    }
+    if (!targetKey) {
+      throw new Error("Missing 'targetKey'. This is required to identify the item to edit.");
+    }
+    if (!targetValue) {
+      throw new Error("Missing 'targetValue'. This is required to locate the target item.");
+    }
+    router.navigate(`${props.urlForm}/?${targetKey}=${targetValue}`);
   }
 
-  async function removeItem(target: string) {
+  async function onClickRemoveButton(targetValue: number | string) {
     if (
       confirm(
         "Você deseja remover este registro? Esta operação não pode ser desfeita!",
       )
     ) {
       setIsLoading(true);
-      await props.onRemoveItems([target]);
-      setItems(items.filter((item: any) => item[targetKey] !== target));
+      await crud.onRemove([targetValue]);
+      setCrud((previous) => ({
+        ...previous,
+        items: previous.items.filter((item) => item[targetKey] !== targetValue),
+      }));
       setIsLoading(false);
     }
   }
 
-  useEffect(() => {
-    const _setItems = async () => {
-      const items = await props.onGetItems();
-      setItems(items);
-      setIsLoading(false);
-    };
-    _setItems();
-  }, []);
-
+  function setOnChangeFormData() {
+    setCrud((previous) => ({
+      ...previous,
+      onChangeFormData: (key: string, value: any) => {
+        setCrud((_previous) => ({
+          ..._previous,
+          formData: { ...(_previous.formData ?? {}), [key]: value },
+        }));
+      },
+    }));
+  }
+  
   if (isLoading) {
     return <Spinner />;
   }
@@ -74,20 +102,15 @@ export default function CrudComponent(props: CrudProps): ReactNode {
   return (
     <View style={styles.container}>
       <Text style={globalStyles.textTitle}>{props.title}</Text>
-      {/* Search Input */}
       <TextInput
         style={globalStyles.inputForm}
-        placeholder={"Buscar..."}
-        value={searchText}
-        onChangeText={setSearchText}
+        placeholder={"Filtrar..."}
+        value={customFilter}
+        onChangeText={setCustomFilter}
       />
-
-      {/* Add Button */}
-      <TouchableOpacity style={styles.addButton} onPress={openAddForm}>
+      <TouchableOpacity style={styles.addButton} onPress={onClickAddButton}>
         <Text style={styles.addButtonText}>Adicionar</Text>
       </TouchableOpacity>
-
-      {/* List */}
       <FlatList
         data={filteredItems}
         keyExtractor={(item) => item[targetKey]?.toString()}
@@ -105,13 +128,13 @@ export default function CrudComponent(props: CrudProps): ReactNode {
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.editButton}
-                  onPress={() => openEditForm(item[targetKey])}
+                  onPress={() => onClickEditButton(item[targetKey])}
                 >
                   <Text style={styles.buttonText}>Editar</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.deleteButton}
-                  onPress={() => removeItem(item[targetKey])}
+                  onPress={() => onClickRemoveButton(item[targetKey])}
                 >
                   <Text style={styles.buttonText}>Remover</Text>
                 </TouchableOpacity>
