@@ -1,12 +1,6 @@
 import { Redirect, Stack } from "expo-router";
 
 export default function RootLayout() {
-  const isAuthorized = true;
-
-  if (!isAuthorized) {
-    return <Redirect href="/login" />;
-  }
-
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
