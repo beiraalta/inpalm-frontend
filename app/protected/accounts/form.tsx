@@ -42,9 +42,16 @@ export default function Screen() {
       />
       <Text style={globalStyles.textForm}>E-Mail</Text>
       <TextInput
+
+        autoCapitalize="none"
+        autoCorrect={false}
+        inputMode="email"
+        keyboardType="email-address"
         onChangeText={(text) => crud.onChangeFormData("user", text)}
         placeholder="Digite o e-mail do usuário"
         placeholderTextColor="gray"
+        textContentType="emailAddress"
+
         style={globalStyles.inputForm}
         value={crud.formData.user}
       />

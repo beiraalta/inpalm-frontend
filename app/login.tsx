@@ -23,10 +23,9 @@ export default function Screen() {
       Authorizer.saveToken(authToken);
     } catch (error) {
       alert(error);
-      setUser("");
       setPassword("");
     } finally {
-      router.navigate("/");
+      router.navigate("/protected");
       setIsLoading(false);
     }
   }
@@ -46,6 +45,9 @@ export default function Screen() {
 
       {/* Email Input */}
       <TextInput
+        autoCapitalize="none"
+        autoCorrect={false}
+        inputMode="email"
         keyboardType="email-address"
         onChangeText={setUser}
         placeholder="E-mail"
