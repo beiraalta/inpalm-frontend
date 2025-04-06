@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { isLoadingAtom, Spinner } from "@/components/spinner";
+import { isLoadingAtom, Spinner } from "@/shared/components/spinner";
 import { useAtom } from "jotai";
 
 export default function HomeScreen() {

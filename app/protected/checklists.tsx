@@ -1,4 +1,4 @@
-import CrudComponent from "@/components/crud";
+import CrudComponent from "@/shared/components/crud";
 
 const initialUsers = [
   { id: 1, name: "John Doe" },

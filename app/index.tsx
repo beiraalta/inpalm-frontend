@@ -2,7 +2,7 @@ import { Authorizer } from "@/shared/authorizer";
 import { Redirect } from "expo-router";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
-import {isLoadingAtom, Spinner} from "@/components/spinner";
+import {isLoadingAtom, Spinner} from "@/shared/components/spinner";
 
 export default function Screen() {
   const [isAuthorized, setIsAuthorized] = useState(false);

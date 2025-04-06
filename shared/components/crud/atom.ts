@@ -4,6 +4,7 @@ import { T } from '@/shared/custom_types';
 type CrudAtom<T> = {
   formData: T | null;
   items: T[];
+  isEditing: boolean;
   onAdd: (formData: T) => Promise<T>;
   onChangeFormData: (key: string, value: any) => void;
   onEdit: (targetValue: number | string, formData: T, targetKey?: string) => Promise<T>;
@@ -13,6 +14,7 @@ type CrudAtom<T> = {
 
 export const crudAtom = atom<CrudAtom<T>>({
   formData: {},
+  isEditing: false,
   items: [],
   onAdd: async () => {
     throw new Error("onAdd not implemented");

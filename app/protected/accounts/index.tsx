@@ -1,6 +1,6 @@
 import { OmniAuth } from "@/services/omniauth";
 import { useEffect, useMemo } from "react";
-import { crudAtom, CrudComponent } from "@/components/crud";
+import { crudAtom, CrudComponent } from "@/shared/components/crud";
 import { useAtom } from "jotai";
 
 export default function Screen() {

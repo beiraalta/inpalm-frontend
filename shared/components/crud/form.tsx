@@ -29,17 +29,21 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
       record = records[0];
     } 
     setCrud((previous) => ({ ...previous, formData: record }));
+    setCrud((previous) => ({ ...previous, isEditing: isEditing }));
   }, []);
 
   async function onSubmit() {
     setIsLoading(true);
     try {
       if (isEditing) {
-        if (props.targetValue == undefined) {
+        if (targetValue == undefined) {
           throw new Error("targetValue is undefined");
         }
-        const record = await crud.onEdit(targetKey, props.targetValue, crud.formData);
-
+        const record = await crud.onEdit(targetValue, crud.formData);
+        setCrud((previous) => ({
+          ...previous,
+          items: previous.items.map((item) => item[targetKey] === targetValue ? record : item),
+        }));
       } else {
         const record = await crud.onAdd(crud.formData);
         setCrud((previous) => ({

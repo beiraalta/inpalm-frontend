@@ -1,5 +1,5 @@
-import { crudAtom } from "@/components/crud";
-import { CrudFormComponent } from "@/components/crud/form";
+import { crudAtom } from "@/shared/components/crud";
+import { CrudFormComponent } from "@/shared/components/crud/form";
 import { globalStyles } from "@/constants/styles";
 import { OmniAuth } from "@/services/omniauth";
 import { Text, TextInput } from "react-native";
@@ -48,24 +48,29 @@ export default function Screen() {
         style={globalStyles.inputForm}
         value={crud.formData.user}
       />
-      <Text style={globalStyles.textForm}>Senha</Text>
-      <TextInput
-        onChangeText={(text) => crud.onChangeFormData("password", text)}
-        placeholder="Digite a senha do usuário"
-        placeholderTextColor="gray"
-        secureTextEntry
-        style={globalStyles.inputForm}
-        value={crud.formData.password}
-      />
-      <Text style={globalStyles.textForm}>Confirmação de Senha</Text>
-      <TextInput
-        onChangeText={(text) => setConfirmPassword(text)}
-        placeholder="Confirme a senha do usuário"
-        placeholderTextColor="gray"
-        secureTextEntry
-        style={globalStyles.inputForm}
-        value={confirmPassword}
-      />
+      {!crud.isEditing && (
+        <>
+          <Text style={globalStyles.textForm}>Senha</Text>
+          <TextInput
+            onChangeText={(text) => crud.onChangeFormData("password", text)}
+            placeholder="Digite a senha do usuário"
+            placeholderTextColor="gray"
+            secureTextEntry
+            style={globalStyles.inputForm}
+            value={crud.formData.password}
+          />
+
+          <Text style={globalStyles.textForm}>Confirmação de Senha</Text>
+          <TextInput
+            onChangeText={(text) => setConfirmPassword(text)}
+            placeholder="Confirme a senha do usuário"
+            placeholderTextColor="gray"
+            secureTextEntry
+            style={globalStyles.inputForm}
+            value={confirmPassword}
+          />
+        </>
+      )}
     </CrudFormComponent>
   );
 }
