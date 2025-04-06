@@ -1,5 +1,5 @@
 import { Account, APIResponse, T } from "@/shared/custom_types";
-import { REACT_APP_OMNIAUTH_URL } from "../constants/settings";
+import { REACT_APP_OMNIAUTH_URL } from "../shared/constants/settings";
 import AbstractService from "./abstract";
 
 export class OmniAuth extends AbstractService {

@@ -1,6 +1,6 @@
 import { Authorizer } from "@/shared/authorizer";
 import { Button, Image, Text, TextInput, TouchableOpacity, View, } from "react-native";
-import { globalStyles } from "../constants/styles";
+import { globalStyles } from "../shared/constants/styles";
 import { isLoadingAtom, Spinner } from "@/shared/components/spinner";
 import { OmniAuth } from "@/services/omniauth";
 import { useAtom } from "jotai";

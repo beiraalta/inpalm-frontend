@@ -1,5 +1,5 @@
 import { crudAtom } from "./atom";
-import { globalStyles } from "@/constants/styles";
+import { globalStyles } from "@/shared/constants/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
 import { ReactNode, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

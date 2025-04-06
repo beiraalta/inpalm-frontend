@@ -2,7 +2,7 @@ import "react-native-reanimated";
 import { ScrollView } from "react-native";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { globalStyles } from "../constants/styles";
+import { globalStyles } from "../shared/constants/styles";
 
 SplashScreen.preventAutoHideAsync();
 

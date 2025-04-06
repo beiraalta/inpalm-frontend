@@ -1,6 +1,6 @@
 import { crudAtom } from "./atom";
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
-import { globalStyles } from "@/constants/styles";
+import { globalStyles } from "@/shared/constants/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
 import { useAtom } from "jotai";
 import { useRouter } from "expo-router";

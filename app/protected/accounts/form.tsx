@@ -1,6 +1,6 @@
 import { crudAtom } from "@/shared/components/crud";
 import { CrudFormComponent } from "@/shared/components/crud/form";
-import { globalStyles } from "@/constants/styles";
+import { globalStyles } from "@/shared/constants/styles";
 import { OmniAuth } from "@/services/omniauth";
 import { Text, TextInput } from "react-native";
 import { useAtom } from "jotai";
