@@ -1,11 +1,11 @@
-import { OmniAuth } from "@/shared/services/omniauth";
-import { useEffect, useMemo } from "react";
+import { AccountService } from "./service";
 import { crudAtom, CrudComponent } from "@/shared/components/crud";
 import { useAtom } from "jotai";
+import { useEffect, useMemo } from "react";
 
 export default function AccountComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
-  const omniAuth = useMemo(() => new OmniAuth(), []);
+  const service = useMemo(() => new AccountService(), []);
 
   useEffect(() => {
     setOnFind();
@@ -14,15 +14,15 @@ export default function AccountComponent() {
 
   async function setOnFind() {
     setCrud((previous) => ({ ...previous, onFind: async (searchParams) => {
-      await omniAuth.initialize();
-      return await omniAuth.findAccounts(searchParams);
+      await service.initialize();
+      return await service.findAccounts(searchParams);
     }}));
   }
 
   async function setOnRemove() {
     setCrud((previous) => ({ ...previous, onRemove: async (targetValues) => {
-      await omniAuth.initialize();
-      await omniAuth.removeAccounts(targetValues);
+      await service.initialize();
+      await service.removeAccounts(targetValues);
     }}));
   }
 

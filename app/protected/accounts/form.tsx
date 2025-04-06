@@ -1,14 +1,14 @@
+import { AccountService } from "./service";
 import { crudAtom } from "@/shared/components/crud";
 import { CrudFormComponent } from "@/shared/components/crud/form";
 import { globalStyles } from "@/shared/constants/styles";
-import { OmniAuth } from "@/shared/services/omniauth";
 import { Text, TextInput } from "react-native";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
 export default function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
-  const omniAuth = useMemo(() => new OmniAuth(), []);
+  const service = useMemo(() => new AccountService(), []);
 
   useEffect(() => {
     setOnAdd();
@@ -20,8 +20,8 @@ export default function AccountFormComponent() {
       if (formData.password !== formData.confirmPassword) {
         throw Error("A senha e a confirmação não batem. Corrija, por favor.");
       }      
-      await omniAuth.initialize();
-      return await omniAuth.addAccount({
+      await service.initialize();
+      return await service.addAccount({
         name: formData.name,
         user: formData.user,
         password: formData.password,
@@ -31,8 +31,8 @@ export default function AccountFormComponent() {
 
   function setOnEdit() {
     setCrud((previous) => ({ ...previous, onEdit: async (targetValue, formData) => {
-      await omniAuth.initialize();
-      return await omniAuth.editAccount(targetValue, {
+      await service.initialize();
+      return await service.editAccount(targetValue, {
         name: formData.name,
         user: formData.user,
       });
