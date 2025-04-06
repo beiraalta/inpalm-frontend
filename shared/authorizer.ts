@@ -1,4 +1,4 @@
-import { OmniAuth } from "@/services/omniauth";
+import { OmniAuth } from "@/shared/services/omniauth";
 import { Storage } from "./storage";
 
 export class Authorizer {

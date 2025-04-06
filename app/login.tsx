@@ -2,7 +2,7 @@ import { Authorizer } from "@/shared/authorizer";
 import { Button, Image, Text, TextInput, TouchableOpacity, View, } from "react-native";
 import { globalStyles } from "../shared/constants/styles";
 import { isLoadingAtom, Spinner } from "@/shared/components/spinner";
-import { OmniAuth } from "@/services/omniauth";
+import { OmniAuth } from "@/shared/services/omniauth";
 import { useAtom } from "jotai";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";

@@ -1,4 +1,4 @@
-import { OmniAuth } from "@/services/omniauth";
+import { OmniAuth } from "@/shared/services/omniauth";
 import { useEffect, useMemo } from "react";
 import { crudAtom, CrudComponent } from "@/shared/components/crud";
 import { useAtom } from "jotai";
