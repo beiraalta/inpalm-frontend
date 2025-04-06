@@ -6,7 +6,7 @@ import React, { useEffect, useState } from "react";
 import { isLoadingAtom, Spinner } from "@/shared/components/spinner";
 import { useAtom } from "jotai";
 
-export default function HomeScreen() {
+export default function HomeComponent() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
@@ -41,10 +41,10 @@ export default function HomeScreen() {
 }
 
 const buttons = [
-  { title: "Checklists", icon: "checkbox", url: "/protected/checklists" },
-  { title: "Pendências", icon: "time", url: "/protected/pendings" },
-  { title: "Usuários", icon: "person", url: "/protected/accounts" },
-  { title: "Grupos", icon: "people", url: "/protected/groups" },
+  { title: "Checklists", icon: "checkbox", url: "/protected/checklists", disable: false },
+  { title: "Pendências", icon: "time", url: "/protected/pendings", disable: false },
+  { title: "Usuários", icon: "person", url: "/protected/accounts", disable: false },
+  { title: "Grupos", icon: "people", url: "/protected/groups", disable: true },
 ] as const;
 
 export function GridScreen() {
@@ -61,6 +61,7 @@ export function GridScreen() {
             onClick={() => {
               router.navigate(button.url);
             }}
+            disabled={button.disable}
           />
         ))}
       </View>
@@ -73,6 +74,7 @@ export function GridScreen() {
             onClick={() => {
               router.navigate(button.url);
             }}
+            disabled={button.disable}
           />
         ))}
       </View>
@@ -80,9 +82,13 @@ export function GridScreen() {
   );
 }
 
-const GridButton = ({ title, icon, onClick }) => {
+const GridButton = ({ title, icon, onClick, disabled }) => {
   return (
-    <TouchableOpacity style={styles.gridButton} onPress={onClick}>
+    <TouchableOpacity
+      style={[styles.gridButton, disabled && { opacity: 0.5 }]}
+      onPress={disabled ? undefined : onClick}
+      disabled={disabled}
+    >
       <Ionicons name={icon} size={28} color="black" />
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>

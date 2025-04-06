@@ -6,7 +6,7 @@ import { Text, TextInput } from "react-native";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
-export default function Screen() {
+export default function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const omniAuth = useMemo(() => new OmniAuth(), []);
 

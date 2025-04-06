@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import {isLoadingAtom, Spinner} from "@/shared/components/spinner";
 
-export default function Screen() {
+export default function IndexComponent() {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
