@@ -1,8 +1,10 @@
+import { CancelButton, SubmitButton } from "../buttons";
 import { crudAtom } from "./atom";
+import { DefaultLanguage } from "@/shared/constants/languages";
 import { globalStyles } from "@/shared/constants/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
 import { ReactNode, useEffect } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useAtom } from "jotai";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
@@ -27,12 +29,12 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
         item[targetKey]?.toString().toLowerCase().includes(targetValue)
       );
       record = records[0];
-    } 
+    }
     setCrud((previous) => ({ ...previous, formData: record }));
     setCrud((previous) => ({ ...previous, isEditing: isEditing }));
   }, [crud.onAdd, crud.onEdit]);
 
-  async function onSubmit() {
+  async function onClickSubmitButton() {
     setIsLoading(true);
     try {
       if (isEditing) {
@@ -42,18 +44,20 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
         const record = await crud.onEdit(targetValue, crud.formData);
         setCrud((previous) => ({
           ...previous,
-          items: previous.items.map((item) => item[targetKey] === targetValue ? record : item),
+          items: previous.items.map((item) =>
+            item[targetKey] === targetValue ? record : item
+          ),
         }));
       } else {
         const record = await crud.onAdd(crud.formData);
         setCrud((previous) => ({
           ...previous,
           items: [record, ...previous.items],
-        }));        
+        }));
       }
       setCrud((previous) => ({ ...previous, formData: {} }));
       router.back();
-    } catch(error) {
+    } catch (error) {
       alert((error as Error)?.message || "An unknown error occurred.");
     } finally {
       setIsLoading(false);
@@ -67,32 +71,15 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
   return (
     <View style={styles.container}>
       <Text style={globalStyles.textTitle}>
-        {isEditing ? "Editar " : "Adicionar"} {props.title}
+        {isEditing ? DefaultLanguage.EDIT : DefaultLanguage.ADD} {props.title}
       </Text>
       {props.children}
-      <TouchableOpacity style={styles.submitButton} onPress={onSubmit}>
-        <Text style={styles.buttonText}>Salvar</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.cancelButton}
-        onPress={() => router.back()}
-      >
-        <Text style={styles.cancelText}>Cancelar</Text>
-      </TouchableOpacity>
+      <SubmitButton onPress={onClickSubmitButton} />
+      <CancelButton />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  buttonText: { color: "#fff", fontWeight: "bold" },
-  cancelButton: { alignItems: "center", padding: 10 },
-  cancelText: { color: "#007bff", fontSize: 16 },
   container: { padding: 20, justifyContent: "center" },
-  submitButton: {
-    backgroundColor: "#007bff",
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
 });

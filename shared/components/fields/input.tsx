@@ -1,6 +1,7 @@
 import { Controller, Control, FieldValues, Path } from "react-hook-form";
 import { fieldStyle } from "./styles";
 import { TextInput, View, Text } from "react-native";
+import { DefaultLanguage } from "@/shared/constants/languages";
 
 type InputFieldProps<TFieldValues extends FieldValues> = Readonly<{
   control: Control<TFieldValues>;
@@ -13,7 +14,7 @@ export default function InputField<TFieldValues extends FieldValues>(
   props: InputFieldProps<TFieldValues>
 ) {
 
-  const placeholder = props.placeholder?? `Forneça o campo ${props.label}`
+  const placeholder = props.placeholder?? DefaultLanguage.PLACEHOLDER(props.label)
 
   return (
     <Controller
