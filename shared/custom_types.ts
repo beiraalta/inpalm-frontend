@@ -6,13 +6,18 @@ export type APIResponse<T> = {
   data: T;
 };
 
+export type ObjectIdName = {
+  id: string;
+  name: string;
+};
+
+export type ObjectKeyValue = {
+  key: string;
+  value: string;
+};
+
 export type Records<T> = {
   records: T[];
   filtered: number;
   total: number;
-};
-
-export type ObjectIdName = {
-  id: string;
-  name: string;
 };

@@ -22,17 +22,17 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
   const [crud, setCrud] = useAtom(crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
-  useEffect(() => {
-    let record = {};
-    if (isEditing) {
-      const records = crud.items.filter((item: any) =>
-        item[targetKey]?.toString().toLowerCase().includes(targetValue)
-      );
-      record = records[0];
-    }
-    setCrud((previous) => ({ ...previous, formData: record }));
-    setCrud((previous) => ({ ...previous, isEditing: isEditing }));
-  }, [crud.onAdd, crud.onEdit]);
+  // useEffect(() => {
+  //   let record = {};
+  //   if (isEditing) {
+  //     const records = crud.items.filter((item: any) =>
+  //       item[targetKey]?.toString().toLowerCase().includes(targetValue)
+  //     );
+  //     record = records[0];
+  //   }
+  //   setCrud((previous) => ({ ...previous, formData: record }));
+  //   setCrud((previous) => ({ ...previous, isEditing: isEditing }));
+  // }, [crud.onAdd, crud.onEdit]);
 
   async function onClickSubmitButton() {
     setIsLoading(true);
@@ -71,7 +71,7 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
   return (
     <View style={styles.container}>
       <Text style={globalStyles.textTitle}>
-        {isEditing ? DefaultLanguage.EDIT : DefaultLanguage.ADD} {props.title}
+        {isEditing ? DefaultLanguage.INFO.EDIT : DefaultLanguage.INFO.ADD} {props.title}
       </Text>
       {props.children}
       <SubmitButton onPress={onClickSubmitButton} />

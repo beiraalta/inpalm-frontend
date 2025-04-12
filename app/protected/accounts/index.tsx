@@ -1,5 +1,6 @@
 import { AccountService } from "./service";
 import { crudAtom, CrudComponent } from "@/shared/components/crud";
+import { DefaultLanguage } from "@/shared/constants/languages";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
@@ -29,8 +30,8 @@ export default function AccountComponent() {
   return (
     <CrudComponent
       itemKeys={["name", "user"]}
-      itemNames={["Name", "E-mail"]}
-      title="Usuários"
+      itemNames={[DefaultLanguage.INFO.NAME, DefaultLanguage.INFO.EMAIL]}
+      title={DefaultLanguage.INFO.USERS}
       urlForm="/protected/accounts/form"
     />
   );

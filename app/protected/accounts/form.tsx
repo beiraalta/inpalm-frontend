@@ -1,91 +1,94 @@
 import { AccountService } from "./service";
 import { crudAtom } from "@/shared/components/crud";
 import { CrudFormComponent } from "@/shared/components/crud/form";
-import { globalStyles } from "@/shared/constants/styles";
-import { Text, TextInput } from "react-native";
+import { DefaultLanguage } from "@/shared/constants/languages";
+import { ExtendedAccountSchema } from "./custom_types";
+import { InputField } from "@/shared/components/fields";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const service = useMemo(() => new AccountService(), []);
+  const { control, handleSubmit, reset } = useForm({
+    mode: "onSubmit",
+    resolver: zodResolver(ExtendedAccountSchema),
+    reValidateMode: "onSubmit",
+  });
 
   useEffect(() => {
     setOnAdd();
     setOnEdit();
-  }, []);
+    if (crud.formData) {
+      reset(crud.formData);
+    }
+  }, [crud.formData]);
 
   function setOnAdd() {
-    setCrud((previous) => ({ ...previous, onAdd: async (formData) => {
-      if (formData.password !== formData.confirmPassword) {
-        throw Error("A senha e a confirmação não batem. Corrija, por favor.");
-      }      
-      await service.initialize();
-      return await service.addAccount({
-        name: formData.name,
-        user: formData.user,
-        password: formData.password,
-      });
-    }}));
+    setCrud((previous) => ({
+      ...previous,
+      onAdd: async (formData) => {
+        await service.initialize();
+        return await service.addAccount({
+          name: formData.name,
+          user: formData.user,
+          password: formData.password,
+        });
+      },
+    }));
   }
 
   function setOnEdit() {
-    setCrud((previous) => ({ ...previous, onEdit: async (targetValue, formData) => {
-      await service.initialize();
-      return await service.editAccount(targetValue, {
-        name: formData.name,
-        user: formData.user,
-      });
-    }}));
+    setCrud((previous) => ({
+      ...previous,
+      onEdit: async (targetValue, formData) => {
+        await service.initialize();
+        return await service.editAccount(targetValue, {
+          name: formData.name,
+          user: formData.user,
+        });
+      },
+    }));
   }
 
   return (
-    <CrudFormComponent title="Usuário">
-      <Text style={globalStyles.textForm}>Nome</Text>
-      <TextInput
-        onChangeText={(text) => crud.onChangeFormData("name", text)}
-        placeholder="Digite o nome do usuário"
-        placeholderTextColor="gray"
-        style={globalStyles.inputForm}
-        value={crud.formData.name}
+    <CrudFormComponent
+      title={DefaultLanguage.INFO.USER}
+      // onSubmitClick={(onSubmit) => {
+      //   console.log("onSubmit");
+      //   handleSubmit((formData) => {
+      //     console.log("onHandleSubmit");
+      //     console.log(formData);
+      //     onSubmit();
+      //   });
+      //   console.log(onSubmit);
+      // }}
+    >
+      <InputField
+        path="name"
+        control={control}
+        label={DefaultLanguage.INFO.NAME}
       />
-      <Text style={globalStyles.textForm}>E-Mail</Text>
-      <TextInput
-
-        autoCapitalize="none"
-        autoCorrect={false}
-        inputMode="email"
-        keyboardType="email-address"
-        onChangeText={(text) => crud.onChangeFormData("user", text)}
-        placeholder="Digite o e-mail do usuário"
-        placeholderTextColor="gray"
-        textContentType="emailAddress"
-
-        style={globalStyles.inputForm}
-        value={crud.formData.user}
+      <InputField
+        path="user"
+        control={control}
+        label={DefaultLanguage.INFO.EMAIL}
       />
       {!crud.isEditing && (
-        <>
-          <Text style={globalStyles.textForm}>Senha</Text>
-          <TextInput
-            onChangeText={(text) => crud.onChangeFormData("password", text)}
-            placeholder="Digite a senha do usuário"
-            placeholderTextColor="gray"
-            secureTextEntry
-            style={globalStyles.inputForm}
-            value={crud.formData.password}
-          />
-
-          <Text style={globalStyles.textForm}>Confirmação de Senha</Text>
-          <TextInput
-            onChangeText={(text) => crud.onChangeFormData("confirmPassword", text)}
-            placeholder="Confirme a senha do usuário"
-            placeholderTextColor="gray"
-            secureTextEntry
-            style={globalStyles.inputForm}
-            value={crud.formData.confirmPassword}
-          />
-        </>
+        <InputField
+          path="password"
+          control={control}
+          label={DefaultLanguage.INFO.PASSWORD}
+        />
+      )}
+      {!crud.isEditing && (
+        <InputField
+          path="confirmPassword"
+          control={control}
+          label={DefaultLanguage.INFO.CONFIRM_PASSWORD}
+        />
       )}
     </CrudFormComponent>
   );

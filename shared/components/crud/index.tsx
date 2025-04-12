@@ -3,8 +3,10 @@ import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "r
 import { globalStyles } from "@/shared/constants/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
 import { useAtom } from "jotai";
-import { useRouter } from "expo-router";
+import { RelativePathString, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
+import { DefaultLanguage } from "@/shared/constants/languages";
+import { UseFormHandleSubmit } from "react-hook-form";
 
 export { crudAtom } from "./atom";
 
@@ -13,7 +15,7 @@ export type CrudComponentProps = Readonly<{
   itemNames: string[];
   targetKey?: string;
   title: string;
-  urlForm: string;
+  urlForm: RelativePathString;
 }>;
 
 export function CrudComponent(props: CrudComponentProps) {
@@ -33,35 +35,27 @@ export function CrudComponent(props: CrudComponentProps) {
 
   useEffect(() => {
     onLoad();
-    setOnChangeFormData();
+    // setOnChangeFormData();
   }, [crud.onFind, crud.onRemove]);
 
   function onClickAddButton() {
-    if (typeof props.urlForm !== 'string') {
-      throw new Error("Invalid or missing 'urlForm'. Expected a non-empty string.");
-    }
+    setCrud((previous) => ({ ...previous, formData: {} }));
+    setCrud((previous) => ({ ...previous, isEditing: false }));
     router.navigate(props.urlForm);
   }
 
   function onClickEditButton(targetValue: string) {
-    if (typeof props.urlForm !== 'string') {
-      throw new Error("Invalid or missing 'urlForm'. Expected a non-empty string.");
-    }
-    if (!targetKey) {
-      throw new Error("Missing 'targetKey'. This is required to identify the item to edit.");
-    }
-    if (!targetValue) {
-      throw new Error("Missing 'targetValue'. This is required to locate the target item.");
-    }
+    const records = crud.items.filter((item: any) =>
+      item[targetKey]?.toString().toLowerCase().includes(targetValue)
+    );
+    const record = records[0];
+    setCrud((previous) => ({ ...previous, formData: record }));
+    setCrud((previous) => ({ ...previous, isEditing: true }));
     router.navigate(`${props.urlForm}/?${targetKey}=${targetValue}`);
   }
 
   async function onClickRemoveButton(targetValue: number | string) {
-    if (
-      confirm(
-        "Você deseja remover este registro? Esta operação não pode ser desfeita!",
-      )
-    ) {
+    if (confirm(DefaultLanguage.INFO.CONFIRM_REMOVAL)) {
       setIsLoading(true);
       await crud.onRemove([targetValue]);
       setCrud((previous) => ({
@@ -86,17 +80,17 @@ export function CrudComponent(props: CrudComponentProps) {
     }
   }
 
-  function setOnChangeFormData() {
-    setCrud((previous) => ({
-      ...previous,
-      onChangeFormData: (key: string, value: any) => {
-        setCrud((_previous) => ({
-          ..._previous,
-          formData: { ...(_previous.formData ?? {}), [key]: value },
-        }));
-      },
-    }));
-  }
+  // function setOnChangeFormData() {
+    // setCrud((previous) => ({
+    //   ...previous,
+    //   onChangeFormData: (key: string, value: any) => {
+    //     setCrud((_previous) => ({
+    //       ..._previous,
+    //       formData: { ...(_previous.formData ?? {}), [key]: value },
+    //     }));
+    //   },
+    // }));
+  // }
   
   if (isLoading) {
     return <Spinner />;
