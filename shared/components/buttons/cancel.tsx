@@ -11,7 +11,7 @@ type SubmitButtonProps = Readonly<{
 export default function CancelButton(props: SubmitButtonProps) {
   const router = useRouter();
 
-  const label = props.label ?? DefaultLanguage.CANCEL;
+  const label = props.label ?? DefaultLanguage.INFO.CANCEL;
 
   const onPress =
     props.onPress ??

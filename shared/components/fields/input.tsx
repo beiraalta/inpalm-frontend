@@ -14,7 +14,7 @@ export default function InputField<TFieldValues extends FieldValues>(
   props: InputFieldProps<TFieldValues>
 ) {
 
-  const placeholder = props.placeholder?? DefaultLanguage.PLACEHOLDER(props.label)
+  const placeholder = props.placeholder?? DefaultLanguage.INFO.PLACEHOLDER(props.label)
 
   return (
     <Controller

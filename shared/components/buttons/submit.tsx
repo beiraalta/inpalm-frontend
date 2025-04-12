@@ -8,7 +8,7 @@ type SubmitButtonProps = Readonly<{
 }>;
 
 export default function SubmitButton(props: SubmitButtonProps) {
-  const label = props.label ?? DefaultLanguage.SAVE;
+  const label = props.label ?? DefaultLanguage.INFO.SAVE;
 
   return (
     <TouchableOpacity style={buttonStyle.submit.button} onPress={props.onPress}>
