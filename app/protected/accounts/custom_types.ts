@@ -1,21 +1,24 @@
+import { BaseSchema, ObjectIdNameType } from "@/shared/custom_types";
 import { DefaultLanguage } from "@/shared/constants/languages";
-import { ObjectIdName } from "@/shared/custom_types";
 import { z } from "zod";
 
-export const AccountSchema = z.object({
-  id: z.string().optional(),
+export const BaseAccountSchema = BaseSchema.extend({
   name: z.string().min(1, { message: DefaultLanguage.FAILURE.MANDATORY_FIELD }),
-  password: z
-  .string()
-  .min(1, { message: DefaultLanguage.FAILURE.MANDATORY_FIELD }),
   user: z
     .string()
     .min(1, { message: DefaultLanguage.FAILURE.MANDATORY_FIELD })
     .email({ message: DefaultLanguage.FAILURE.INVALID_EMAIL }),
 });
+
+export const AccountSchema = BaseAccountSchema.extend({
+  password: z.string().optional(),
+});
 export type AccountType = z.infer<typeof AccountSchema>;
 
-export const ExtendedAccountSchema = AccountSchema.extend({
+export const AddAccountSchema = BaseAccountSchema.extend({
+  password: z
+    .string()
+    .min(1, { message: DefaultLanguage.FAILURE.MANDATORY_FIELD }),
   confirmPassword: z
     .string()
     .min(1, { message: DefaultLanguage.FAILURE.MANDATORY_FIELD }),
@@ -23,9 +26,9 @@ export const ExtendedAccountSchema = AccountSchema.extend({
   message: DefaultLanguage.FAILURE.PASSWORD_MISMATCH,
   path: ["confirmPassword"],
 });
-export type ExtendedAccountType = z.infer<typeof ExtendedAccountSchema>;
+export type AddAccountType = z.infer<typeof AddAccountSchema>;
 
 export type RoleType = {
   id?: string;
-  accounts: ObjectIdName[];
+  accounts: ObjectIdNameType[];
 };

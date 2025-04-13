@@ -3,7 +3,7 @@ const portuguese = {
     INVALID_EMAIL: "Campo deve ser um e-mail válido.",
     MANDATORY_FIELD: "Campo obrigatório.",
     PASSWORD_MISMATCH: "A senha e a confirmação não correspondem. Por favor, corrija.",
-
+    SOMETHING_WRONG: "Algo deu errado!",
   },
   INFO: {
     ADD: "Adicionar",

@@ -1,8 +1,8 @@
+import { AccountSchema, AddAccountSchema } from "./custom_types";
 import { AccountService } from "./service";
 import { crudAtom } from "@/shared/components/crud";
 import { CrudFormComponent } from "@/shared/components/crud/form";
 import { DefaultLanguage } from "@/shared/constants/languages";
-import { ExtendedAccountSchema } from "./custom_types";
 import { InputField } from "@/shared/components/fields";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
@@ -12,19 +12,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export default function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const service = useMemo(() => new AccountService(), []);
+  const schema = crud.isEditing? AccountSchema : AddAccountSchema;
   const { control, handleSubmit, reset } = useForm({
+    defaultValues: {
+      name: "",
+      user: "",
+    },
     mode: "onSubmit",
-    resolver: zodResolver(ExtendedAccountSchema),
+    resolver: zodResolver(schema),
     reValidateMode: "onSubmit",
   });
-
-  useEffect(() => {
-    setOnAdd();
-    setOnEdit();
-    if (crud.formData) {
-      reset(crud.formData);
-    }
-  }, [crud.formData]);
 
   function setOnAdd() {
     setCrud((previous) => ({
@@ -53,41 +50,53 @@ export default function AccountFormComponent() {
     }));
   }
 
+  useEffect(() => {
+    setOnAdd();
+    setOnEdit();
+    if (crud.formData) {
+      reset(crud.formData);
+    }
+  }, [crud.formData]);
+
   return (
     <CrudFormComponent
       title={DefaultLanguage.INFO.USER}
-      // onSubmitClick={(onSubmit) => {
-      //   console.log("onSubmit");
-      //   handleSubmit((formData) => {
-      //     console.log("onHandleSubmit");
-      //     console.log(formData);
-      //     onSubmit();
-      //   });
-      //   console.log(onSubmit);
-      // }}
+      onClickSubmitButton={handleSubmit(async (formData) => {
+        await crud.onSubmit(formData);
+      },
+    
+    
+      (formData) => {
+       console.log(formData); 
+      }
+
+
+    )}
     >
       <InputField
-        path="name"
         control={control}
         label={DefaultLanguage.INFO.NAME}
+        path="name"
       />
       <InputField
-        path="user"
         control={control}
         label={DefaultLanguage.INFO.EMAIL}
+        path="user"
       />
       {!crud.isEditing && (
         <InputField
-          path="password"
           control={control}
+          isSecure={true}
           label={DefaultLanguage.INFO.PASSWORD}
+          path="password"
         />
       )}
       {!crud.isEditing && (
         <InputField
-          path="confirmPassword"
           control={control}
+          isSecure={true}
           label={DefaultLanguage.INFO.CONFIRM_PASSWORD}
+          path="confirmPassword"
         />
       )}
     </CrudFormComponent>

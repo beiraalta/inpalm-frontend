@@ -6,10 +6,10 @@ type CrudAtom<T> = {
   items: T[];
   isEditing: boolean;
   onAdd: (formData: T) => Promise<T>;
-  // onChangeFormData: (key: string, value: any) => void;
   onEdit: (targetValue: number | string, formData: T, targetKey?: string) => Promise<T>;
   onFind: (searchParams: any) => Promise<T[]>;
   onRemove: (targetValues: number[] | string[], targetKey?: string) => Promise<void>;
+  onSubmit: (formData: any) => Promise<void>;
 };
 
 export const crudAtom = atom<CrudAtom<T>>({
@@ -19,9 +19,6 @@ export const crudAtom = atom<CrudAtom<T>>({
   onAdd: async () => {
     throw new Error("onAdd not implemented");
   },
-  // onChangeFormData: () => {
-  //   throw new Error("onChangeFormData not implemented");
-  // },
   onEdit: async () => {
     throw new Error("onEdit not implemented");
   },
@@ -30,5 +27,8 @@ export const crudAtom = atom<CrudAtom<T>>({
   },
   onRemove: async () => {
     throw new Error("onRemove not implemented");
+  },
+  onSubmit: async (formData: any) => {
+    throw new Error("onSubmit not implemented");
   },
 });

@@ -1,12 +1,18 @@
 import { crudAtom } from "./atom";
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View,} from "react-native";
+import { DefaultLanguage } from "@/shared/constants/languages";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { globalStyles } from "@/shared/constants/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
-import { useAtom } from "jotai";
 import { RelativePathString, useRouter } from "expo-router";
+import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
-import { DefaultLanguage } from "@/shared/constants/languages";
-import { UseFormHandleSubmit } from "react-hook-form";
 
 export { crudAtom } from "./atom";
 
@@ -28,14 +34,13 @@ export function CrudComponent(props: CrudComponentProps) {
     if (customFilter.length >= 3) {
       return props.itemKeys.some((key) =>
         item[key]?.toString().toLowerCase().includes(customFilter.toLowerCase())
-      )
+      );
     }
     return crud.items;
   });
 
   useEffect(() => {
     onLoad();
-    // setOnChangeFormData();
   }, [crud.onFind, crud.onRemove]);
 
   function onClickAddButton() {
@@ -70,28 +75,19 @@ export function CrudComponent(props: CrudComponentProps) {
     setIsLoading(true);
     try {
       const records = await crud.onFind(searchParams);
-      setCrud((previous) => ({ ...previous, items: records.toSorted((lhs, rhs) => rhs.updated_at.localeCompare(lhs.updated_at)) }));
-    }
-    catch (error) {
+      setCrud((previous) => ({
+        ...previous,
+        items: records.toSorted((lhs, rhs) =>
+          rhs.updated_at.localeCompare(lhs.updated_at)
+        ),
+      }));
+    } catch (error) {
       console.log((error as Error)?.message || "An unknown error occurred.");
-    }
-    finally { 
+    } finally {
       setIsLoading(false);
     }
   }
 
-  // function setOnChangeFormData() {
-    // setCrud((previous) => ({
-    //   ...previous,
-    //   onChangeFormData: (key: string, value: any) => {
-    //     setCrud((_previous) => ({
-    //       ..._previous,
-    //       formData: { ...(_previous.formData ?? {}), [key]: value },
-    //     }));
-    //   },
-    // }));
-  // }
-  
   if (isLoading) {
     return <Spinner />;
   }

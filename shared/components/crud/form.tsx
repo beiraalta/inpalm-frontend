@@ -10,6 +10,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 
 export type CrudFormComponentProps = Readonly<{
   children: ReactNode;
+  onClickSubmitButton: () => void | Promise<void>;
   targetKey?: string;
   title: string;
 }>;
@@ -22,47 +23,49 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
   const [crud, setCrud] = useAtom(crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
-  // useEffect(() => {
-  //   let record = {};
-  //   if (isEditing) {
-  //     const records = crud.items.filter((item: any) =>
-  //       item[targetKey]?.toString().toLowerCase().includes(targetValue)
-  //     );
-  //     record = records[0];
-  //   }
-  //   setCrud((previous) => ({ ...previous, formData: record }));
-  //   setCrud((previous) => ({ ...previous, isEditing: isEditing }));
-  // }, [crud.onAdd, crud.onEdit]);
-
-  async function onClickSubmitButton() {
-    setIsLoading(true);
-    try {
-      if (isEditing) {
-        if (targetValue == undefined) {
-          throw new Error("targetValue is undefined");
+  async function setOnSubmit() {
+    setCrud((previous) => ({
+      ...previous,
+      onSubmit: async (formData: any) => {
+        setIsLoading(true);
+        try {
+          if (isEditing) {
+            if (!targetValue) {
+              throw new Error("targetValue is undefined");
+            }
+            const record = await previous.onEdit(
+              targetValue,
+              formData
+            );
+            setCrud((_previous) => ({
+              ..._previous,
+              items: _previous.items.map((item) =>
+                item[targetKey] === targetValue ? record : item
+              ),
+            }));
+          } else {
+            const record = await previous.onAdd(formData);
+            setCrud((_previous) => ({
+              ..._previous,
+              items: [record, ..._previous.items],
+            }));
+          }
+          setCrud((_previous) => ({ ..._previous, formData: {} }));
+          router.back();
+        } catch (error) {
+          alert(
+            (error as Error)?.message || DefaultLanguage.FAILURE.SOMETHING_WRONG
+          );
+        } finally {
+          setIsLoading(false);
         }
-        const record = await crud.onEdit(targetValue, crud.formData);
-        setCrud((previous) => ({
-          ...previous,
-          items: previous.items.map((item) =>
-            item[targetKey] === targetValue ? record : item
-          ),
-        }));
-      } else {
-        const record = await crud.onAdd(crud.formData);
-        setCrud((previous) => ({
-          ...previous,
-          items: [record, ...previous.items],
-        }));
-      }
-      setCrud((previous) => ({ ...previous, formData: {} }));
-      router.back();
-    } catch (error) {
-      alert((error as Error)?.message || "An unknown error occurred.");
-    } finally {
-      setIsLoading(false);
-    }
+      },
+    }));
   }
+
+  useEffect(() => {
+    setOnSubmit();
+  }, [crud.onAdd, crud.onEdit, crud.formData]);
 
   if (isLoading) {
     return <Spinner />;
@@ -71,10 +74,11 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
   return (
     <View style={styles.container}>
       <Text style={globalStyles.textTitle}>
-        {isEditing ? DefaultLanguage.INFO.EDIT : DefaultLanguage.INFO.ADD} {props.title}
+        {isEditing ? DefaultLanguage.INFO.EDIT : DefaultLanguage.INFO.ADD}{" "}
+        {props.title}
       </Text>
       {props.children}
-      <SubmitButton onPress={onClickSubmitButton} />
+      <SubmitButton onPress={props.onClickSubmitButton} />
       <CancelButton />
     </View>
   );

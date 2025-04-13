@@ -27,6 +27,9 @@ export default function PickerField<TFieldValues extends FieldValues>(
       render={({ field: { onChange, value, ref }, fieldState }) => (
         <View>
           <Text style={fieldStyle.label}>{props.label}</Text>
+          {fieldState.error && (
+            <Text style={fieldStyle.error}>{fieldState.error.message}</Text>
+          )}
           <Picker
             placeholder={placeholder}
             selectedValue={value}
@@ -44,9 +47,6 @@ export default function PickerField<TFieldValues extends FieldValues>(
               );
             })}
           </Picker>
-          {fieldState.error && (
-            <Text style={fieldStyle.error}>{fieldState.error.message}</Text>
-          )}
         </View>
       )}
     />
