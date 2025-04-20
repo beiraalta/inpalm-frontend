@@ -1,12 +1,12 @@
-import { AccountService } from "./service";
+import { ChecklistService } from "./service";
 import { crudAtom, CrudComponent } from "@/shared/components/crud";
 import { defaultLanguage } from "@/shared/constants/languages";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
-export default function AccountComponent() {
+export default function ChecklistComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
-  const service = useMemo(() => new AccountService(), []);
+  const service = useMemo(() => new ChecklistService(), []);
 
   useEffect(() => {
     setOnFind();
@@ -16,14 +16,14 @@ export default function AccountComponent() {
   async function setOnFind() {
     setCrud((previous) => ({ ...previous, onFind: async (searchParams) => {
       await service.initialize();
-      return await service.findAccounts(searchParams);
+      return await service.findChecklists(searchParams);
     }}));
   }
 
   async function setOnRemove() {
     setCrud((previous) => ({ ...previous, onRemove: async (targetValues) => {
       await service.initialize();
-      await service.removeAccounts(targetValues);
+      await service.removeChecklists(targetValues);
     }}));
   }
 
@@ -31,8 +31,8 @@ export default function AccountComponent() {
     <CrudComponent
       itemKeys={["name", "user"]}
       itemNames={[defaultLanguage.INFO.NAME, defaultLanguage.INFO.EMAIL]}
-      title={defaultLanguage.INFO.USERS}
-      urlForm="/protected/accounts/form"
+      title={defaultLanguage.INFO.CHECKLISTS}
+      urlForm="/protected/checklists/form"
     />
   );
 }

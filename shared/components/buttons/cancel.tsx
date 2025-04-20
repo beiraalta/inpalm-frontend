@@ -1,5 +1,5 @@
 import { buttonStyle } from "./styles";
-import { DefaultLanguage } from "@/shared/constants/languages";
+import { defaultLanguage } from "@/shared/constants/languages";
 import { useRouter } from "expo-router";
 import { Text, TouchableOpacity } from "react-native";
 
@@ -11,7 +11,7 @@ type SubmitButtonProps = Readonly<{
 export default function CancelButton(props: SubmitButtonProps) {
   const router = useRouter();
 
-  const label = props.label ?? DefaultLanguage.INFO.CANCEL;
+  const label = props.label ?? defaultLanguage.INFO.CANCEL;
 
   const onPress =
     props.onPress ??

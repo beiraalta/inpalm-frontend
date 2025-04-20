@@ -1,5 +1,5 @@
 import { REACT_APP_OMNIAUTH_URL } from "../constants/settings";
-import AbstractService from "./abstract";
+import { AbstractService } from "./abstract";
 
 export class OmniAuth extends AbstractService {
   constructor() {

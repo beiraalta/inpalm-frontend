@@ -1,4 +1,14 @@
-export const globalStyles = {
+export const componentStyle = {
+  card: {
+    backgroundColor: "#fff",
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    elevation: 3,
+  },
+  cardContainer: { flexDirection: "row", marginBottom: 5 },
+  cardContainerName: { fontSize: 16, fontWeight: "bold", marginRight: 5 },
+  cardContainerValue: { fontSize: 16 },
   container: {
     alignItems: "center",
     justifyContent: "center",
@@ -10,6 +20,7 @@ export const globalStyles = {
     marginBottom: 20,
     width: 250,
   },
+  inlineContainer: { flexDirection: "row", marginTop: 10 },  
   inputLogin: {
     backgroundColor: "#fff",
     borderColor: "#ccc",
@@ -21,7 +32,7 @@ export const globalStyles = {
     paddingLeft: 10,
     width: "100%",
   },
-  inputForm: {
+  inputFilter: {
     backgroundColor: "#fff",
     borderColor: "#ccc",
     borderRadius: 8,
@@ -29,9 +40,6 @@ export const globalStyles = {
     height: 40,
     marginBottom: 10,
     paddingHorizontal: 10,
-  },
-  textForm: {
-    fontWeight: "bold",
   },
   textTitle: {
     fontSize: 22,

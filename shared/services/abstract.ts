@@ -2,7 +2,7 @@ import { APIResponse, Records, T } from "@/shared/custom_types";
 import { Storage } from "@/shared/storage";
 import ky, { KyInstance, Options } from "ky";
 
-export default class AbstractService {
+export class AbstractService {
   http: KyInstance;
   url: string;
 

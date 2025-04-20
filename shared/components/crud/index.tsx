@@ -1,15 +1,17 @@
+import { buttonStyle } from "../buttons/styles";
+import { DetailCard } from "../card";
+import { componentStyle } from "@/shared/components/styles";
 import { crudAtom } from "./atom";
-import { DefaultLanguage } from "@/shared/constants/languages";
+import { defaultLanguage } from "@/shared/constants/languages";
 import {
   FlatList,
-  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { globalStyles } from "@/shared/constants/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
+import { Ionicons } from "@expo/vector-icons";
 import { RelativePathString, useRouter } from "expo-router";
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
@@ -60,7 +62,7 @@ export function CrudComponent(props: CrudComponentProps) {
   }
 
   async function onClickRemoveButton(targetValue: number | string) {
-    if (confirm(DefaultLanguage.INFO.CONFIRM_REMOVAL)) {
+    if (confirm(defaultLanguage.INFO.CONFIRM_REMOVAL)) {
       setIsLoading(true);
       await crud.onRemove([targetValue]);
       setCrud((previous) => ({
@@ -93,80 +95,50 @@ export function CrudComponent(props: CrudComponentProps) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={globalStyles.textTitle}>{props.title}</Text>
+    <View style={{ padding: 20 }}>
+      <Text style={componentStyle.textTitle}>{props.title}</Text>
       <TextInput
-        style={globalStyles.inputForm}
+        style={componentStyle.inputFilter}
         placeholder={"Filtrar..."}
         value={customFilter}
         onChangeText={setCustomFilter}
       />
-      <TouchableOpacity style={styles.addButton} onPress={onClickAddButton}>
-        <Text style={styles.addButtonText}>Adicionar</Text>
+      <TouchableOpacity style={buttonStyle.button} onPress={onClickAddButton}>
+        <Ionicons name="add" size={20} color="#fff" />
       </TouchableOpacity>
       <FlatList
         data={filteredItems}
-        keyExtractor={(item) => item[targetKey]?.toString()}
         renderItem={({ item }) => (
-          <View style={styles.card}>
-            <View>
-              {props.itemKeys.map((key: any, keyIndex: number) => (
-                <View key={item[key]} style={styles.cardContainer}>
-                  <Text style={styles.cardContainerName}>
-                    {props.itemNames[keyIndex]}:
-                  </Text>
-                  <Text style={styles.cardContainerValue}>{item[key]}</Text>
-                </View>
-              ))}
-              <View style={styles.buttonContainer}>
+          <DetailCard
+            buttons={
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  gap: 10,
+                }}
+              >
                 <TouchableOpacity
-                  style={styles.editButton}
+                  style={[buttonStyle.button, buttonStyle.edit]}
                   onPress={() => onClickEditButton(item[targetKey])}
                 >
-                  <Text style={styles.buttonText}>Editar</Text>
+                  <Ionicons name="pencil" size={20} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={styles.deleteButton}
+                  style={[buttonStyle.button, buttonStyle.delete]}
                   onPress={() => onClickRemoveButton(item[targetKey])}
                 >
-                  <Text style={styles.buttonText}>Remover</Text>
+                  <Ionicons name="trash" size={20} color="#fff" />
                 </TouchableOpacity>
               </View>
-            </View>
-          </View>
+            }
+            item={item}
+            itemKeys={props.itemKeys}
+            itemLabels={props.itemNames}
+            targetKey={targetKey}
+          />
         )}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  addButton: {
-    backgroundColor: "#007bff",
-    padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  addButtonText: { color: "#fff", fontWeight: "bold" },
-  buttonContainer: { flexDirection: "row", marginTop: 10 },
-  buttonText: { color: "#fff", fontWeight: "bold", textAlign: "center" },
-  card: {
-    backgroundColor: "#fff",
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 10,
-    elevation: 3,
-  },
-  cardContainer: { flexDirection: "row", marginBottom: 5 },
-  cardContainerName: { fontSize: 16, fontWeight: "bold", marginRight: 5 },
-  cardContainerValue: { fontSize: 16 },
-  container: { padding: 20 },
-  deleteButton: { backgroundColor: "#dc3545", padding: 10, borderRadius: 5 },
-  editButton: {
-    backgroundColor: "#28a745",
-    padding: 10,
-    borderRadius: 5,
-    marginRight: 5,
-  },
-});

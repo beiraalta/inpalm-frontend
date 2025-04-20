@@ -1,7 +1,7 @@
 import { AccountType, RoleType } from "./custom_types";
-import { OmniAuth } from "@/shared/services/omniauth";
+import { AbstractService } from "@/shared/services/abstract";
 
-export class AccountService extends OmniAuth {
+export class AccountService extends AbstractService {
 
   async addAccount(account: AccountType): Promise<AccountType> {
     const options = { json: account };

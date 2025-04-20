@@ -1,5 +1,5 @@
 import { buttonStyle } from "./styles";
-import { DefaultLanguage } from "@/shared/constants/languages";
+import { defaultLanguage } from "@/shared/constants/languages";
 import { Text, TouchableOpacity } from "react-native";
 
 type SubmitButtonProps = Readonly<{
@@ -8,11 +8,11 @@ type SubmitButtonProps = Readonly<{
 }>;
 
 export default function SubmitButton(props: SubmitButtonProps) {
-  const label = props.label ?? DefaultLanguage.INFO.SAVE;
+  const label = props.label ?? defaultLanguage.INFO.SAVE;
 
   return (
-    <TouchableOpacity style={buttonStyle.submit.button} onPress={props.onPress}>
-      <Text style={buttonStyle.submit.label}>{label}</Text>
+    <TouchableOpacity style={buttonStyle.button} onPress={props.onPress}>
+      <Text style={buttonStyle.label}>{label}</Text>
     </TouchableOpacity>
   );
 }

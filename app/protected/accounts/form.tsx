@@ -2,7 +2,7 @@ import { AccountSchema, AddAccountSchema } from "./custom_types";
 import { AccountService } from "./service";
 import { crudAtom } from "@/shared/components/crud";
 import { CrudFormComponent } from "@/shared/components/crud/form";
-import { DefaultLanguage } from "@/shared/constants/languages";
+import { defaultLanguage } from "@/shared/constants/languages";
 import { InputField } from "@/shared/components/fields";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
@@ -12,7 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export default function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const service = useMemo(() => new AccountService(), []);
-  const schema = crud.isEditing? AccountSchema : AddAccountSchema;
+  const schema = crud.isEditing ? AccountSchema : AddAccountSchema;
   const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       name: "",
@@ -60,34 +60,26 @@ export default function AccountFormComponent() {
 
   return (
     <CrudFormComponent
-      title={DefaultLanguage.INFO.USER}
+      title={defaultLanguage.INFO.USER}
       onClickSubmitButton={handleSubmit(async (formData) => {
         await crud.onSubmit(formData);
-      },
-    
-    
-      (formData) => {
-       console.log(formData); 
-      }
-
-
-    )}
+      })}
     >
       <InputField
         control={control}
-        label={DefaultLanguage.INFO.NAME}
+        label={defaultLanguage.INFO.NAME}
         path="name"
       />
       <InputField
         control={control}
-        label={DefaultLanguage.INFO.EMAIL}
+        label={defaultLanguage.INFO.EMAIL}
         path="user"
       />
       {!crud.isEditing && (
         <InputField
           control={control}
           isSecure={true}
-          label={DefaultLanguage.INFO.PASSWORD}
+          label={defaultLanguage.INFO.PASSWORD}
           path="password"
         />
       )}
@@ -95,7 +87,7 @@ export default function AccountFormComponent() {
         <InputField
           control={control}
           isSecure={true}
-          label={DefaultLanguage.INFO.CONFIRM_PASSWORD}
+          label={defaultLanguage.INFO.CONFIRM_PASSWORD}
           path="confirmPassword"
         />
       )}

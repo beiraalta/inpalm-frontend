@@ -1,6 +1,6 @@
 import { Authorizer } from "@/shared/authorizer";
 import { Button, Image, Text, TextInput, TouchableOpacity, View, } from "react-native";
-import { globalStyles } from "../shared/constants/styles";
+import { componentStyle } from "../shared/components/styles";
 import { isLoadingAtom, Spinner } from "@/shared/components/spinner";
 import { OmniAuth } from "@/shared/services/omniauth";
 import { useAtom } from "jotai";
@@ -35,11 +35,11 @@ export default function LoginComponent() {
   }
 
   return (
-    <View style={[globalStyles.container, globalStyles.containerBgColor]}>
+    <View style={[componentStyle.container, componentStyle.containerBgColor]}>
       {/* Logo Image */}
       <Image
         source={require("../assets/images/inpalm-banner.png")}
-        style={globalStyles.imgBanner}
+        style={componentStyle.imgBanner}
         resizeMode="contain"
       />
 
@@ -51,7 +51,7 @@ export default function LoginComponent() {
         keyboardType="email-address"
         onChangeText={setUser}
         placeholder="E-mail"
-        style={globalStyles.inputLogin}
+        style={componentStyle.inputLogin}
       />
 
       {/* Password Input */}
@@ -59,7 +59,7 @@ export default function LoginComponent() {
         onChangeText={setPassword}
         placeholder="Senha"
         secureTextEntry
-        style={globalStyles.inputLogin}
+        style={componentStyle.inputLogin}
       />
 
       {/* Authenticate Button */}

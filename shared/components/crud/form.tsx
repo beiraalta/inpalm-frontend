@@ -1,7 +1,7 @@
 import { CancelButton, SubmitButton } from "../buttons";
 import { crudAtom } from "./atom";
-import { DefaultLanguage } from "@/shared/constants/languages";
-import { globalStyles } from "@/shared/constants/styles";
+import { defaultLanguage } from "@/shared/constants/languages";
+import { componentStyle } from "@/shared/components/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
 import { ReactNode, useEffect } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -54,7 +54,7 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
           router.back();
         } catch (error) {
           alert(
-            (error as Error)?.message || DefaultLanguage.FAILURE.SOMETHING_WRONG
+            (error as Error)?.message || defaultLanguage.FAILURE.SOMETHING_WRONG
           );
         } finally {
           setIsLoading(false);
@@ -73,8 +73,8 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={globalStyles.textTitle}>
-        {isEditing ? DefaultLanguage.INFO.EDIT : DefaultLanguage.INFO.ADD}{" "}
+      <Text style={componentStyle.textTitle}>
+        {isEditing ? defaultLanguage.INFO.EDIT : defaultLanguage.INFO.ADD}{" "}
         {props.title}
       </Text>
       {props.children}
