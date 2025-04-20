@@ -10,7 +10,19 @@ export const buttonStyle = {
     button: { alignItems: "center", padding: 10 },
     label: { color: "#007bff", fontSize: 16 },
   },
-  delete: { backgroundColor: "#dc3545", marginBottom: 0 },
-  edit: { backgroundColor: "#28a745", marginBottom: 0 },
+  delete: {
+    backgroundColor: "#dc3545",
+    height: 35,
+    marginBottom: 0,
+    padding: 6,
+    width: 35,
+  },
+  edit: {
+    backgroundColor: "#28a745",
+    height: 35,
+    marginBottom: 0,
+    padding: 6,
+    width: 35,
+  },
   label: { color: "#fff", fontWeight: "bold", textAlign: "center" },
 };

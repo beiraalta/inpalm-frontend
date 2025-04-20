@@ -1,4 +1,4 @@
-import { ChecklistType } from "./custom_types";
+import { ChecklistType, TechnicalReportType } from "./custom_types";
 import { Backend } from "@/shared/services/backend";
 
 export class ChecklistService extends Backend {
@@ -15,7 +15,11 @@ export class ChecklistService extends Backend {
   }
 
   async findChecklists(urlSearchParams?: any): Promise<ChecklistType[]> {
-    return await this.get("./checklists/", urlSearchParams);
+    return await this.getRecords("./checklists/", urlSearchParams);
+  }
+
+  async findTechnicalReports(id: string): Promise<TechnicalReportType[]> {
+    return await this.getData(`./checklists/${id}/technical-reports/`);
   }
 
   async removeChecklists(targetValues: string[]): Promise<void> {

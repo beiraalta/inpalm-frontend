@@ -1,7 +1,7 @@
 import { AccountType, RoleType } from "./custom_types";
-import { AbstractService } from "@/shared/services/abstract";
+import { OmniAuth } from "@/shared/services/omniauth";
 
-export class AccountService extends AbstractService {
+export class AccountService extends OmniAuth {
 
   async addAccount(account: AccountType): Promise<AccountType> {
     const options = { json: account };
@@ -16,7 +16,7 @@ export class AccountService extends AbstractService {
   }
 
   async findAccounts(urlSearchParams?: any): Promise<AccountType[]> {
-    return await this.get("./accounts/", urlSearchParams);
+    return await this.getRecords("./accounts/", urlSearchParams);
   }
 
   async removeAccounts(targetValues: string[]): Promise<void> {
@@ -25,7 +25,7 @@ export class AccountService extends AbstractService {
   }
 
   private async  findRoles(urlSearchParams?: any): Promise<RoleType[]> {
-    return await this.get("./roles/", urlSearchParams);
+    return await this.getRecords("./roles/", urlSearchParams);
   }
 
   private async addAccountIntoMembers(account: AccountType): Promise<void> {

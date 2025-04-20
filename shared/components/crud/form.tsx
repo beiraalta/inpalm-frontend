@@ -1,5 +1,4 @@
 import { CancelButton, SubmitButton } from "../buttons";
-import { crudAtom } from "./atom";
 import { defaultLanguage } from "@/shared/constants/languages";
 import { componentStyle } from "@/shared/components/styles";
 import { isLoadingAtom, Spinner } from "../spinner";
@@ -9,6 +8,7 @@ import { useAtom } from "jotai";
 import { useLocalSearchParams, useRouter } from "expo-router";
 
 export type CrudFormComponentProps = Readonly<{
+  crudAtom: any;
   children: ReactNode;
   onClickSubmitButton: () => void | Promise<void>;
   targetKey?: string;
@@ -20,7 +20,7 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
   const targetValue = useLocalSearchParams()[targetKey];
   const isEditing = !!targetValue;
   const router = useRouter();
-  const [crud, setCrud] = useAtom(crudAtom);
+  const [crud, setCrud] = useAtom(props.crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
 
   async function setOnSubmit() {

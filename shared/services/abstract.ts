@@ -29,6 +29,27 @@ export class AbstractService {
     try {
       const searchParams = new URLSearchParams(urlSearchParams);
       const response = await this.http.get(url, { searchParams });
+      return await response.json<T>();
+    } catch (error: any) {
+      throw this.prepareError(error);
+    }
+  }
+
+  async getData(url: string, urlSearchParams: any = {}): Promise<T[]> {
+    try {
+      const searchParams = new URLSearchParams(urlSearchParams);
+      const response = await this.http.get(url, { searchParams });
+      const apiResponse = await response.json<APIResponse<T>>();
+      return apiResponse?.data;
+    } catch (error: any) {
+      throw this.prepareError(error);
+    }
+  }
+
+  async getRecords(url: string, urlSearchParams: any = {}): Promise<T[]> {
+    try {
+      const searchParams = new URLSearchParams(urlSearchParams);
+      const response = await this.http.get(url, { searchParams });
       const apiResponse = await response.json<APIResponse<Records<T>>>();
       return apiResponse?.data?.records;
     } catch (error: any) {

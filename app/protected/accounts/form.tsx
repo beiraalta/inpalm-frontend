@@ -1,6 +1,6 @@
 import { AccountSchema, AddAccountSchema } from "./custom_types";
 import { AccountService } from "./service";
-import { crudAtom } from "@/shared/components/crud";
+import { crudAtom } from "./atom";
 import { CrudFormComponent } from "@/shared/components/crud/form";
 import { defaultLanguage } from "@/shared/constants/languages";
 import { InputField } from "@/shared/components/fields";
@@ -60,6 +60,7 @@ export default function AccountFormComponent() {
 
   return (
     <CrudFormComponent
+      crudAtom={crudAtom}
       title={defaultLanguage.INFO.USER}
       onClickSubmitButton={handleSubmit(async (formData) => {
         await crud.onSubmit(formData);

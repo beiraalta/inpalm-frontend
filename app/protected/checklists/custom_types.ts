@@ -23,8 +23,10 @@ export const PurchasePendingSchema = z.object({
 
 export const TechnicalReportSchema = z.object({
   note: z.string(),
+  filepath: z.string().optional(),
   photo: z.string().optional(),
 });
+export type TechnicalReportType = z.infer<typeof TechnicalReportSchema>;
 
 export const ChecklistSchema = BaseSchema.extend({
   assembly_team: z.string(),

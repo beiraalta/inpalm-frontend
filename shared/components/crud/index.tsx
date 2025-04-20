@@ -1,24 +1,16 @@
 import { buttonStyle } from "../buttons/styles";
 import { DetailCard } from "../card";
 import { componentStyle } from "@/shared/components/styles";
-import { crudAtom } from "./atom";
 import { defaultLanguage } from "@/shared/constants/languages";
-import {
-  FlatList,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { isLoadingAtom, Spinner } from "../spinner";
+import { FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { isLoadingAtom, Spinner } from "../spinner";
 import { RelativePathString, useRouter } from "expo-router";
 import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 
-export { crudAtom } from "./atom";
-
 export type CrudComponentProps = Readonly<{
+  crudAtom: any;
   itemKeys: any[];
   itemNames: string[];
   targetKey?: string;
@@ -27,7 +19,7 @@ export type CrudComponentProps = Readonly<{
 }>;
 
 export function CrudComponent(props: CrudComponentProps) {
-  const [crud, setCrud] = useAtom(crudAtom);
+  const [crud, setCrud] = useAtom(props.crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const [customFilter, setCustomFilter] = useState("");
   const router = useRouter();
@@ -115,7 +107,7 @@ export function CrudComponent(props: CrudComponentProps) {
                 style={{
                   flexDirection: "row",
                   justifyContent: "flex-end",
-                  gap: 10,
+                  gap: 7,
                 }}
               >
                 <TouchableOpacity

@@ -1,7 +1,6 @@
-import { atom } from 'jotai';
 import { T } from '@/shared/custom_types';
 
-type CrudAtom<T> = {
+export type CrudAtom<T> = {
   formData: T | null;
   items: T[];
   isEditing: boolean;
@@ -12,7 +11,7 @@ type CrudAtom<T> = {
   onSubmit: (formData: any) => Promise<void>;
 };
 
-export const crudAtom = atom<CrudAtom<T>>({
+export const initialAtom: CrudAtom<T>  = {
   formData: {},
   isEditing: false,
   items: [],
@@ -31,4 +30,4 @@ export const crudAtom = atom<CrudAtom<T>>({
   onSubmit: async (formData: any) => {
     throw new Error("onSubmit not implemented");
   },
-});
+}
