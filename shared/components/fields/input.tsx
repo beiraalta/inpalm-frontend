@@ -5,8 +5,10 @@ import { defaultLanguage } from "@/shared/constants/languages";
 
 type InputFieldProps<TFieldValues extends FieldValues> = Readonly<{
   control: Control<TFieldValues>;
+  disabled?: boolean;
   height?: number;
   isMultiline?: boolean;
+  isNumber?: boolean;
   isSecure?: boolean;
   label: string;
   path: Path<TFieldValues>;
@@ -16,12 +18,14 @@ type InputFieldProps<TFieldValues extends FieldValues> = Readonly<{
 export default function InputField<TFieldValues extends FieldValues>(
   props: InputFieldProps<TFieldValues>
 ) {
-
-  const height = props.height?? 220;
-  const isMultiline = props.isMultiline?? false;
-  const isSecure = props.isSecure?? false;
-  const numberOfLines = isMultiline? height/22 : 1;
-  const placeholder = props.placeholder?? defaultLanguage.INFO.PLACEHOLDER(props.label);
+  const disabled = props.disabled ?? false;
+  const height = props.height ?? 220;
+  const isMultiline = props.isMultiline ?? false;
+  const isNumber = props.isNumber ?? false;
+  const isSecure = props.isSecure ?? false;
+  const numberOfLines = isMultiline ? height / 22 : 1;
+  const placeholder =
+    props.placeholder ?? defaultLanguage.INFO.PLACEHOLDER(props.label);
 
   return (
     <Controller
@@ -34,16 +38,27 @@ export default function InputField<TFieldValues extends FieldValues>(
             <Text style={fieldStyle.error}>{fieldState.error.message}</Text>
           )}
           <TextInput
+            editable={!disabled}
+            keyboardType={isNumber ? "numeric" : "default"}
             multiline={isMultiline}
             numberOfLines={numberOfLines}
-            onChangeText={onChange}
+            onChangeText={(text) => {
+              if (isNumber) {
+                const number = parseFloat(text);
+                onChange(isNaN(number) ? undefined : number);
+              } else onChange(text);
+            }}
             placeholder={placeholder}
             placeholderTextColor="gray"
             ref={ref}
             secureTextEntry={isSecure}
             style={[
               fieldStyle.element,
-              isMultiline && { height: height, paddingVertical: 10, textAlignVertical: "top" },
+              isMultiline && {
+                height: height,
+                paddingVertical: 10,
+                textAlignVertical: "top",
+              },
             ]}
             value={value}
           />

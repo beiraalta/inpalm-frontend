@@ -1,10 +1,11 @@
 import { Authorizer } from "@/shared/authorizer";
+import { defaultLanguage } from "@/shared/constants/languages";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Redirect, useRouter } from "expo-router";
-import React, { useEffect, useState } from "react";
 import { isLoadingAtom, Spinner } from "@/shared/components/spinner";
 import { useAtom } from "jotai";
+import React, { useEffect, useState } from "react";
 
 export default function HomeComponent() {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -41,10 +42,11 @@ export default function HomeComponent() {
 }
 
 const buttons = [
-  { title: "Checklists", icon: "checkbox", url: "/protected/checklists", disable: false },
-  { title: "Pendências", icon: "time", url: "/protected/pendings", disable: false },
-  { title: "Usuários", icon: "person", url: "/protected/accounts", disable: false },
-  { title: "Grupos", icon: "people", url: "/protected/groups", disable: true },
+  { title: defaultLanguage.INFO.CHECKLISTS, icon: "checkbox-outline", url: "/protected/checklists", disable: false },
+  { title: defaultLanguage.INFO.PIECE_PENDINGS_SHORT, icon: "construct-outline", url: "/protected/piece-pendings", disable: false },
+  { title: defaultLanguage.INFO.PURCHASE_PENDINGS_SHORT, icon: "pricetag-outline", url: "/protected/purchase-pendings", disable: false },
+  { title: defaultLanguage.INFO.USERS, icon: "person-outline", url: "/protected/accounts", disable: false },
+  // { title: "Grupos", icon: "people-outline", url: "/protected/groups", disable: true },
 ] as const;
 
 export function GridScreen() {

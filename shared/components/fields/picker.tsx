@@ -5,6 +5,7 @@ import { View, Text } from "react-native";
 
 type PickerFieldProps<TFieldValues extends FieldValues> = Readonly<{
   control: Control<TFieldValues>;
+  disabled?: boolean;
   label: string;
   path: Path<TFieldValues>;
   placeholder?: string;
@@ -18,6 +19,7 @@ export default function PickerField<TFieldValues extends FieldValues>(
   props: PickerFieldProps<TFieldValues>
 ) {
 
+  const disabled = props.disabled ?? false;
   const placeholder = props.placeholder?? `Forneça o campo ${props.label}`
 
   return (
@@ -31,6 +33,7 @@ export default function PickerField<TFieldValues extends FieldValues>(
             <Text style={fieldStyle.error}>{fieldState.error.message}</Text>
           )}
           <Picker
+            enabled={!disabled}
             placeholder={placeholder}
             selectedValue={value}
             onValueChange={(itemValue, itemIndex) => onChange(itemValue)}

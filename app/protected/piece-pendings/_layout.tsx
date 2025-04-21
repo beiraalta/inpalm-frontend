@@ -5,7 +5,7 @@ export default function RootLayout() {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ title: "Home" }} />
-      <Stack.Screen name="form" options={{ title: defaultLanguage.INFO.CHECKLISTS }} />
+      <Stack.Screen name="form" options={{ title: defaultLanguage.INFO.PIECE_PENDINGS }} />
     </Stack>
   );
 }

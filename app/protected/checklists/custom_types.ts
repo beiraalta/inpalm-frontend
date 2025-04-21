@@ -1,3 +1,4 @@
+import { defaultLanguage } from "@/shared/constants/languages";
 import { BaseSchema } from "@/shared/custom_types";
 import { z } from "zod";
 
@@ -22,21 +23,21 @@ export const PurchasePendingSchema = z.object({
 });
 
 export const TechnicalReportSchema = z.object({
-  note: z.string(),
+  note: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   filepath: z.string().optional(),
   photo: z.string().optional(),
 });
 export type TechnicalReportType = z.infer<typeof TechnicalReportSchema>;
 
 export const ChecklistSchema = BaseSchema.extend({
-  assembly_team: z.string(),
-  customer: z.string(),
+  assembly_team: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  customer: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   delivery_responsible_pnc: z.string().optional(),
-  environments: z.string(),
+  environments: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   inspected_by: z.string().optional(),
   piece_pending_items: z.array(PiecePendingSchema).optional(),
   piece_pending_notes: z.array(z.string()).optional(),
-  project_code: z.string(),
+  project_code: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   purchase_pending_items: z.array(PurchasePendingSchema).optional(),
   purchase_pending_notes: z.array(z.string()).optional(),
   technical_reports: z.array(TechnicalReportSchema),
