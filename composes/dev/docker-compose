@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  inpalm-frontend:
+    container_name: inpalm-frontend-dev
+    image: inpalm-frontend:dev
+    restart: always
+    ports:
+      - "4003:80"
+
+networks:
+  default:
+    external:
+      name: network-dev
