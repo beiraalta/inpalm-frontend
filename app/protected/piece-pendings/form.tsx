@@ -120,10 +120,11 @@ export default function PiecePendingsFormComponent() {
   async function setPiecePendingsAndResetForm() {
     setIsLoading(true);
     await service.initialize();
-    const reports = await service.findTechnicalReports(crud.formData.id);
+    const items = await service.findPiecePendings({id: crud.formData.id}).piece_pending_items;
+    console.log(items);
     reset({
       ...crud.formData,
-      piece_pending_items: reports,
+      piece_pending_items: items,
     });
     setIsLoading(false);
   }

@@ -12,7 +12,9 @@ export class PiecePendingService extends ChecklistService {
   }
 
   async findPiecePendings(urlSearchParams?: any): Promise<PiecePendingType[]> {
-    return await this.getData(`./checklists/`, {piece_pending_items__not__size: 0});
+    urlSearchParams = urlSearchParams || {};
+    urlSearchParams.piece_pending_items__not__size = 0;
+    return await this.getRecords(`./checklists/`, urlSearchParams);
   }
 
   async removePiecePendings(id: string): Promise<void> {
