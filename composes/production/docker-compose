@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  inpalm-frontend:
+    container_name: inpalm-frontend-production
+    image: inpalm-frontend:production
+    restart: always
+    ports:
+      - "2003:80"
+
+networks:
+  default:
+    external:
+      name: network-production
