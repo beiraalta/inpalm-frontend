@@ -9,6 +9,10 @@ export class ChecklistService extends Backend {
     return record;
   }
 
+  async downloadChecklist(targetValue: string): Promise<string> {
+    return await this.download(`./checklists/${targetValue}/download/`, "checklist");
+  }
+
   async editChecklist(targetValue: string, checklist: ChecklistType): Promise<ChecklistType> {
     const options = { json: checklist };
     return await this.put(`./checklists/${targetValue}/`, options);

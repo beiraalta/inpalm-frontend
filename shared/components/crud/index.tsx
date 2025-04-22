@@ -2,7 +2,13 @@ import { buttonStyle } from "../buttons/styles";
 import { DetailCard } from "../card";
 import { componentStyle } from "@/shared/components/styles";
 import { defaultLanguage } from "@/shared/constants/languages";
-import { FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  FlatList,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { isLoadingAtom, Spinner } from "../spinner";
 import { RelativePathString, useRouter } from "expo-router";
@@ -10,6 +16,7 @@ import { useAtom } from "jotai";
 import React, { useEffect, useState } from "react";
 
 export type CrudComponentProps = Readonly<{
+  onClickPrintButton?: (targetValue: any) => Promise<void>;
   crudAtom: any;
   itemKeys: any[];
   itemNames: string[];
@@ -51,6 +58,10 @@ export function CrudComponent(props: CrudComponentProps) {
     setCrud((previous) => ({ ...previous, formData: record }));
     setCrud((previous) => ({ ...previous, isEditing: true }));
     router.navigate(`${props.urlForm}/?${targetKey}=${targetValue}`);
+  }
+
+  function onClickPrintButton(targetValue: string) {
+    console.log(targetValue);
   }
 
   async function onClickRemoveButton(targetValue: number | string) {
@@ -110,6 +121,14 @@ export function CrudComponent(props: CrudComponentProps) {
                   gap: 7,
                 }}
               >
+                {Boolean(props.onClickPrintButton) && (
+                  <TouchableOpacity
+                    style={[buttonStyle.button, buttonStyle.print]}
+                    onPress={async () => await props.onClickPrintButton(item[targetKey])}
+                  >
+                    <Ionicons name="print" size={20} color="#fff" />
+                  </TouchableOpacity>
+                )}
                 <TouchableOpacity
                   style={[buttonStyle.button, buttonStyle.edit]}
                   onPress={() => onClickEditButton(item[targetKey])}

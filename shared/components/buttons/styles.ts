@@ -18,7 +18,12 @@ export const buttonStyle = {
     width: 35,
   },
   edit: {
-    backgroundColor: "#28a745",
+    height: 35,
+    marginBottom: 0,
+    padding: 6,
+    width: 35,
+  },
+  print: {
     height: 35,
     marginBottom: 0,
     padding: 6,

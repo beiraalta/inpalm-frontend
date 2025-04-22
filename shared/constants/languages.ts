@@ -6,6 +6,7 @@ const portuguese = {
     MANDATORY_FIELD: "Campo obrigatório.",
     PASSWORD_MISMATCH: "A senha e a confirmação não correspondem. Por favor, corrija.",
     SOMETHING_WRONG: "Algo deu errado!",
+    UNSELECTED_RECORD: "Ops! Você não selecionou nenhum registro para remover. Escolha pelo menos um 😉",
   },
   INFO: {
     ACTUAL_LENGTH: "Comprimento Constatado",

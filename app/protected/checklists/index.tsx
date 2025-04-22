@@ -2,17 +2,26 @@ import { ChecklistService } from "./service";
 import { crudAtom } from "./atom";
 import { CrudComponent } from "@/shared/components/crud";
 import { defaultLanguage } from "@/shared/constants/languages";
+import { isLoadingAtom } from "@/shared/components/spinner";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
 export default function ChecklistComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
+  const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const service = useMemo(() => new ChecklistService(), []);
 
   useEffect(() => {
     setOnFind();
     setOnRemove();
   }, []);
+
+  async function onClickPrintButton(targetValue: any) {
+    setIsLoading(true);
+    await service.initialize();
+    await service.downloadChecklist(targetValue);
+    setIsLoading(false);
+  }
 
   async function setOnFind() {
     setCrud((previous) => ({
@@ -36,6 +45,7 @@ export default function ChecklistComponent() {
 
   return (
     <CrudComponent
+      onClickPrintButton={onClickPrintButton}
       crudAtom={crudAtom}
       itemKeys={[
         "customer",

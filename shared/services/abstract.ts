@@ -1,6 +1,9 @@
 import { APIResponse, Records, T } from "@/shared/custom_types";
 import { Storage } from "@/shared/storage";
+import * as FileSystem from "expo-file-system";
 import ky, { KyInstance, Options } from "ky";
+import { defaultLanguage } from "../constants/languages";
+import { Platform } from "react-native";
 
 export class AbstractService {
   http: KyInstance;
@@ -13,7 +16,7 @@ export class AbstractService {
 
   async delete(
     url: string,
-    urlSearchParams: any = {},
+    urlSearchParams: any = {}
   ): Promise<APIResponse<T>> {
     try {
       const searchParams = new URLSearchParams(urlSearchParams);
@@ -22,6 +25,46 @@ export class AbstractService {
       return apiResponse;
     } catch (error: any) {
       throw this.prepareError(error);
+    }
+  }
+
+  async download(url: string, filename: string): Promise<string> {
+    try {
+      const response = await this.http.get(url);
+      if (!response.ok) {
+        throw new Error(defaultLanguage.FAILURE.SOMETHING_WRONG);
+      }
+      const contentDisposition = response.headers.get("content-disposition");
+      if (contentDisposition) {
+        const match = contentDisposition.match(/filename\*?=([^;]+)/i);
+        if (match) {
+          filename = decodeURIComponent(
+            match[1]
+              .replace(/(^['"]|['"]$)/g, "")
+              .split("''")
+              .pop() || filename
+          );
+        }
+      }
+      const blob = await response.blob();
+      if (Platform.OS === "web") {
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = filename;
+        anchor.click();
+        URL.revokeObjectURL(url);
+        return filename;
+      }
+      const fileUri = FileSystem.documentDirectory + filename;
+      await FileSystem.writeAsStringAsync(fileUri, await blob.text(), {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      return fileUri;
+    } catch (error) {
+      throw new Error(
+        defaultLanguage.FAILURE.SOMETHING_WRONG + " " + error.message
+      );
     }
   }
 
@@ -94,12 +137,13 @@ export class AbstractService {
     }
   }
 
-  async removeRecords(url: string, targetValues: number[] | string[]): Promise<APIResponse<T>> {
+  async removeRecords(
+    url: string,
+    targetValues: number[] | string[]
+  ): Promise<APIResponse<T>> {
     const joined: string = targetValues?.join(",") ?? "";
     if (!joined) {
-      throw Error(
-        "Ops! Você não selecionou nenhum registro para remover. Escolha pelo menos um 😉",
-      );
+      throw Error(defaultLanguage.FAILURE.UNSELECTED_RECORD);
     }
     return await this.delete(`${url}${joined}/`);
   }
