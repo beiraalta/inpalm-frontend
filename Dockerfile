@@ -1,9 +1,6 @@
-FROM node:18-alpine as builder
+FROM node:22.14.0
 WORKDIR /app
+COPY package*.json ./
+RUN npm install -g expo-cli && npm install
 COPY . .
-RUN npm install
-RUN npx expo export:web
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npx", "expo", "start", "--tunnel", "--port", "4003"]
