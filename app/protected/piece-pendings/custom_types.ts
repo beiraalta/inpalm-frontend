@@ -31,7 +31,7 @@ export const PiecePendingSchema = z.object({
 export type PiecePendingType = z.infer<typeof PiecePendingSchema>;
 
 export const PiecePendingListSchema = z.object({
-  id: z.string(),
-  piece_pending_items: z.array(PiecePendingSchema),
+  id: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  piece_pending_items: z.array(PiecePendingSchema).min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
 });
 export type PiecePendingListType = z.infer<typeof PiecePendingListSchema>;

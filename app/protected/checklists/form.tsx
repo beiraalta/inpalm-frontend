@@ -185,7 +185,7 @@ export default function ChecklistFormComponent() {
         path="technical_reports"
         onRenderItem={(item, index) => {
           return (
-            <View>
+            <View id={`technical-report-${index}`}>
               <View style={cardStyle.card}>
                 <View style={componentStyle.inlineContainer}>
                   <Image

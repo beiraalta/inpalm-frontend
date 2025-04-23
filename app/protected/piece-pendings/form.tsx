@@ -21,7 +21,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function PiecePendingsFormComponent() {
   const [checklists, setChecklists] = useState([]);
-  const [checklistOptions, setChecklistOptions] = useState([{label: "", value: ""}]);
+  const [checklistOptions, setChecklistOptions] = useState([
+    { label: "", value: "" },
+  ]);
   const [crud, setCrud] = useAtom(crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const service = useMemo(() => new PiecePendingService(), []);
@@ -120,11 +122,16 @@ export default function PiecePendingsFormComponent() {
   async function setPiecePendingsAndResetForm() {
     setIsLoading(true);
     await service.initialize();
-    const items = await service.findPiecePendings({id: crud.formData.id}).piece_pending_items;
-    console.log(items);
+    const items = await service.findPiecePendings({ id: crud.formData.id });
+    const normalizedPiecePendings = items[0].piece_pending_items.map((item) => ({
+      ...item,
+      estimated_delivery_date: new Date(
+        item.estimated_delivery_date
+      ).toISOString(),
+    }));
     reset({
       ...crud.formData,
-      piece_pending_items: items,
+      piece_pending_items: normalizedPiecePendings,
     });
     setIsLoading(false);
   }
@@ -142,9 +149,14 @@ export default function PiecePendingsFormComponent() {
     <CrudFormComponent
       crudAtom={crudAtom}
       title={defaultLanguage.INFO.PIECE_PENDINGS}
-      onClickSubmitButton={handleSubmit(async (formData) => {
-        await crud.onSubmit(formData);
-      })}
+      onClickSubmitButton={handleSubmit(
+        async (formData) => {
+          await crud.onSubmit(formData);
+        },
+        (errors) => {
+          console.error(errors);
+        }
+      )}
     >
       <PickerField
         control={control}
@@ -241,6 +253,7 @@ export default function PiecePendingsFormComponent() {
                   </TouchableOpacity>
                 </View>
               }
+              id={`piece-pending-${index}`}
               item={item}
               itemKeys={[
                 "quantity",

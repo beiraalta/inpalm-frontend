@@ -145,6 +145,7 @@ export function CrudComponent(props: CrudComponentProps) {
                 </TouchableOpacity>
               </View>
             }
+            id={item[targetKey]}
             item={item}
             itemKeys={props.itemKeys}
             itemLabels={props.itemNames}
