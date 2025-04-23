@@ -1,7 +1,7 @@
 import { defaultLanguage } from "@/shared/constants/languages";
 import { z } from "zod";
 
-export const PiecePendingSchema = z.object({
+export const PurchasePendingSchema = z.object({
   actual_length: z
     .number({ message: defaultLanguage.FAILURE.INVALID_NUMBER })
     .min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
@@ -28,10 +28,10 @@ export const PiecePendingSchema = z.object({
     .number({ message: defaultLanguage.FAILURE.INVALID_NUMBER })
     .min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
 });
-export type PiecePendingType = z.infer<typeof PiecePendingSchema>;
+export type PurchasePendingType = z.infer<typeof PurchasePendingSchema>;
 
-export const PiecePendingListSchema = z.object({
+export const PurchasePendingListSchema = z.object({
   id: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
-  piece_pending_items: z.array(PiecePendingSchema).min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  piece_pending_items: z.array(PurchasePendingSchema).min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
 });
-export type PiecePendingListType = z.infer<typeof PiecePendingListSchema>;
+export type PurchasePendingListType = z.infer<typeof PurchasePendingListSchema>;

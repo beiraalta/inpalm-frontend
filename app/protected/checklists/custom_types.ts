@@ -36,10 +36,10 @@ export const ChecklistSchema = BaseSchema.extend({
   environments: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   inspected_by: z.string().optional(),
   piece_pending_items: z.array(PiecePendingSchema).optional(),
-  piece_pending_notes: z.array(z.string()).optional(),
+  piece_pending_notes: z.string().optional(),
   project_code: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   purchase_pending_items: z.array(PurchasePendingSchema).optional(),
-  purchase_pending_notes: z.array(z.string()).optional(),
+  purchase_pending_notes: z.string().optional(),
   technical_reports: z.array(TechnicalReportSchema),
 });
 export type ChecklistType = z.infer<typeof ChecklistSchema>;

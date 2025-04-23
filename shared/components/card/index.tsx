@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 
 export type DetailCardProps = Readonly<{
   buttons?: ReactNode;
+  id: string;
   item: any;
   itemKeys: any[];
   itemLabels: string[];
@@ -13,7 +14,7 @@ export type DetailCardProps = Readonly<{
 export function DetailCard(props: DetailCardProps) {
   const buttons = props.buttons?? null;
   return (
-    <View style={cardStyle.card}>
+    <View id={props.id} style={cardStyle.card}>
       <View>
         {props.itemKeys.map((key: any, keyIndex: number) => (
           <View key={props.item[key]} style={cardStyle.cardContainer}>

@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  inpalm-frontend:
+    build: .
+    ports:
+      - "4003:8081"
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+
+networks:
+  default:
+    external:
+      name: network-dev

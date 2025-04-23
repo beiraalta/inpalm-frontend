@@ -32,6 +32,9 @@ export default function DynamicListField<TFieldValues extends FieldValues>(
       render={({ field: { onChange, value, ref }, fieldState }) => (
         <View>
           <Text style={fieldStyle.label}>{props.label}</Text>
+          {fieldState.error && (
+            <Text style={fieldStyle.error}>{fieldState.error.message}</Text>
+          )}
           <View
             style={{
               backgroundColor: "#f0f0f0",

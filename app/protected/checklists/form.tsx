@@ -31,10 +31,10 @@ export default function ChecklistFormComponent() {
       environments: "",
       inspected_by: "",
       piece_pending_items: [],
-      piece_pending_notes: [],
+      piece_pending_notes: "",
       project_code: "",
       purchase_pending_items: [],
-      purchase_pending_notes: [],
+      purchase_pending_notes: "",
       technical_reports: [],
     },
     mode: "onSubmit",
@@ -185,7 +185,7 @@ export default function ChecklistFormComponent() {
         path="technical_reports"
         onRenderItem={(item, index) => {
           return (
-            <View>
+            <View id={`technical-report-${index}`}>
               <View style={cardStyle.card}>
                 <View style={componentStyle.inlineContainer}>
                   <Image
@@ -221,7 +221,20 @@ export default function ChecklistFormComponent() {
           );
         }}
       />
-
+      <InputField
+        control={control}
+        height={75}
+        isMultiline={true}
+        label={defaultLanguage.INFO.PIECE_PENDING_NOTES}
+        path="piece_pending_notes"
+      />
+      <InputField
+        control={control}
+        height={75}
+        isMultiline={true}
+        label={defaultLanguage.INFO.PURCHASE_PENDING_NOTES}
+        path="purchase_pending_notes"
+      />
       <InputField
         control={control}
         label={defaultLanguage.INFO.DELIVERY_RESPONSIBLE_PNC}

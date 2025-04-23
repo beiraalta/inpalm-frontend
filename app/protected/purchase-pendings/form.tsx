@@ -12,28 +12,28 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity, View } from "react-native";
 import { isLoadingAtom } from "@/shared/components/spinner";
-import { PiecePendingSchema, PiecePendingListSchema } from "./custom_types";
-import { PiecePendingService } from "./service";
+import { PurchasePendingSchema, PurchasePendingListSchema } from "./custom_types";
+import { PurchasePendingService } from "./service";
 import { useAtom } from "jotai";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function PiecePendingsFormComponent() {
+export default function PurchasePendingsFormComponent() {
   const [checklists, setChecklists] = useState([]);
   const [checklistOptions, setChecklistOptions] = useState([
     { label: "", value: "" },
   ]);
   const [crud, setCrud] = useAtom(crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
-  const service = useMemo(() => new PiecePendingService(), []);
+  const service = useMemo(() => new PurchasePendingService(), []);
   const { control, handleSubmit, reset, getValues, setValue } = useForm({
     defaultValues: {
       id: "",
       piece_pending_items: [],
     },
     mode: "onSubmit",
-    resolver: zodResolver(PiecePendingListSchema),
+    resolver: zodResolver(PurchasePendingListSchema),
     reValidateMode: "onSubmit",
   });
 
@@ -50,16 +50,16 @@ export default function PiecePendingsFormComponent() {
       thickness: 0.0,
     },
     mode: "onSubmit",
-    resolver: zodResolver(PiecePendingSchema),
+    resolver: zodResolver(PurchasePendingSchema),
     reValidateMode: "onSubmit",
   });
 
   function onClickAddPiecePending() {
-    const piecePendings = piecePendingsForm.getValues();
-    const piecePendingsList = control._formValues.piece_pending_items;
-    piecePendingsList.push(piecePendings);
-    setValue("piece_pending_items", piecePendingsList);
-    piecePendingsForm.reset({
+    const purchasePendings = purchasePendingsForm.getValues();
+    const purchasePendingsList = control._formValues.purchase_pending_items;
+    purchasePendingsList.push(purchasePendings);
+    setValue("purchase_pending_items", purchasePendingsList);
+    purchasePendingsForm.reset({
       actual_length: 0.0,
       actual_width: 0.0,
       adjustment_length: 0.0,
@@ -72,10 +72,10 @@ export default function PiecePendingsFormComponent() {
     });
   }
 
-  function onClickRemovePiecePending(index: number) {
-    const reports = getValues("piece_pending_items");
+  function onClickRemovePurchasePending(index: number) {
+    const reports = getValues("purchase_pending_items");
     setValue(
-      "piece_pending_items",
+      "purchase_pending_items",
       reports.filter((_, i) => i !== index)
     );
   }
@@ -100,8 +100,8 @@ export default function PiecePendingsFormComponent() {
       ...previous,
       onAdd: async (formData) => {
         await service.initialize();
-        return await service.editPiecePendings(formData.id, {
-          piece_pending_items: formData.piece_pending_items,
+        return await service.editPurchasePendings(formData.id, {
+          purchase_pending_items: formData.purchase_pending_items,
         });
       },
     }));
@@ -112,18 +112,18 @@ export default function PiecePendingsFormComponent() {
       ...previous,
       onEdit: async (targetValue, formData) => {
         await service.initialize();
-        return await service.editPiecePendings(targetValue, {
-          piece_pending_items: formData.piece_pending_items,
+        return await service.editPurchasePendings(targetValue, {
+          purchase_pending_items: formData.purchase_pending_items,
         });
       },
     }));
   }
 
-  async function setPiecePendingsAndResetForm() {
+  async function setPurchasePendingsAndResetForm() {
     setIsLoading(true);
     await service.initialize();
-    const items = await service.findPiecePendings({ id: crud.formData.id });
-    const normalizedPiecePendings = items[0].piece_pending_items.map((item) => ({
+    const items = await service.findPurchasePendings({ id: crud.formData.id });
+    const normalizedPurchasePendings = items[0].purchase_pending_items.map((item) => ({
       ...item,
       estimated_delivery_date: new Date(
         item.estimated_delivery_date
@@ -131,7 +131,7 @@ export default function PiecePendingsFormComponent() {
     }));
     reset({
       ...crud.formData,
-      piece_pending_items: normalizedPiecePendings,
+      purchase_pending_items: normalizedPurchasePendings,
     });
     setIsLoading(false);
   }
@@ -140,15 +140,15 @@ export default function PiecePendingsFormComponent() {
     onLoadChecklists();
     setOnAdd();
     setOnEdit();
-    if (crud.formData?.piece_pending_items?.length > 0) {
-      setPiecePendingsAndResetForm();
+    if (crud.formData?.purchase_pending_items?.length > 0) {
+      setPurchasePendingsAndResetForm();
     }
   }, [crud.formData]);
 
   return (
     <CrudFormComponent
       crudAtom={crudAtom}
-      title={defaultLanguage.INFO.PIECE_PENDINGS}
+      title={defaultLanguage.INFO.PURCHASE_PENDINGS}
       onClickSubmitButton={handleSubmit(
         async (formData) => {
           await crud.onSubmit(formData);

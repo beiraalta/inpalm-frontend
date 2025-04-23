@@ -60,19 +60,21 @@ export function CrudComponent(props: CrudComponentProps) {
     router.navigate(`${props.urlForm}/?${targetKey}=${targetValue}`);
   }
 
-  function onClickPrintButton(targetValue: string) {
-    console.log(targetValue);
-  }
-
   async function onClickRemoveButton(targetValue: number | string) {
     if (confirm(defaultLanguage.INFO.CONFIRM_REMOVAL)) {
       setIsLoading(true);
-      await crud.onRemove([targetValue]);
-      setCrud((previous) => ({
-        ...previous,
-        items: previous.items.filter((item) => item[targetKey] !== targetValue),
-      }));
-      setIsLoading(false);
+      try {
+        await crud.onRemove([targetValue]);
+        setCrud((previous) => ({
+          ...previous,
+          items: previous.items.filter((item) => item[targetKey] !== targetValue),
+        }));
+      }
+      catch (error) {
+        alert((await error as Error)?.message || defaultLanguage.FAILURE.SOMETHING_WRONG);
+      } finally {
+        setIsLoading(false);
+      }
     }
   }
 
@@ -87,7 +89,7 @@ export function CrudComponent(props: CrudComponentProps) {
         ),
       }));
     } catch (error) {
-      console.log((error as Error)?.message || "An unknown error occurred.");
+      console.log((await error as Error)?.message || defaultLanguage.FAILURE.SOMETHING_WRONG);
     } finally {
       setIsLoading(false);
     }
@@ -143,6 +145,7 @@ export function CrudComponent(props: CrudComponentProps) {
                 </TouchableOpacity>
               </View>
             }
+            id={item[targetKey]}
             item={item}
             itemKeys={props.itemKeys}
             itemLabels={props.itemNames}
