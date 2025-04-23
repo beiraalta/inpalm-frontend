@@ -1,5 +1,5 @@
 deploy-dev:
-	docker-compose -f docker-compose-dev.yml up -d
+	docker-compose -f docker-compose-dev.yml up -d --build
 
 deploy-production:
-	docker-compose -f docker-compose.yml up -d
+	    docker-compose up -d --build

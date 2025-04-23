@@ -1,6 +1,7 @@
 FROM node:22.14.0
 WORKDIR /app
 COPY package*.json ./
-RUN npm install -g expo-cli && npm install
+RUN npm install
 COPY . .
-CMD ["npx", "expo", "start", "--tunnel", "--port", "4003"]
+EXPOSE 8081
+CMD ["npm", "run", "web"]

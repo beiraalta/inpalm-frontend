@@ -1,22 +1,15 @@
 version: "3.8"
-
 services:
-  inpalm-frontend:
-    container_name: inpalm-frontend-dev
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    build: .
     ports:
-      - "2003:2003"
+      - "2003:8081"
     volumes:
       - .:/app
-      - /app/node_modules
-    environment:
-      - EXPO_DEVTOOLS_LISTEN_ADDRESS=0.0.0.0
     stdin_open: true
     tty: true
 
 networks:
   default:
     external:
-      name: network-dev
+      name: network-production
