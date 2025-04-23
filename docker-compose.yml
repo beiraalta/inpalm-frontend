@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  app:
+  inpalm-frontend:
     build: .
     ports:
       - "2003:8081"
