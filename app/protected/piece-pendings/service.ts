@@ -17,7 +17,7 @@ export class PiecePendingService extends ChecklistService {
     return await this.getRecords(`./checklists/`, urlSearchParams);
   }
 
-  async removePiecePendings(id: string): Promise<void> {
-    // await this.removeRecords("./checklists/", targetValues);
+  async removePiecePendings(targetValues: string): Promise<void> {
+    await this.delete(`./checklists/${targetValues}/piece-pendings/`);
   }
 }

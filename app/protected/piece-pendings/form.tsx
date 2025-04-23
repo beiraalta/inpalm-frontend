@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function PiecePendingsFormComponent() {
   const [checklists, setChecklists] = useState([]);
-  const [checklistOptions, setChecklistOptions] = useState([]);
+  const [checklistOptions, setChecklistOptions] = useState([{label: "", value: ""}]);
   const [crud, setCrud] = useAtom(crudAtom);
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
   const service = useMemo(() => new PiecePendingService(), []);

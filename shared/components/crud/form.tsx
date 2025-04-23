@@ -31,7 +31,7 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
         try {
           if (isEditing) {
             if (!targetValue) {
-              throw new Error("targetValue is undefined");
+              throw new Error(defaultLanguage.FAILURE.UNSELECTED_RECORD);
             }
             const record = await previous.onEdit(
               targetValue,
@@ -54,7 +54,7 @@ export function CrudFormComponent(props: CrudFormComponentProps) {
           router.back();
         } catch (error) {
           alert(
-            (error as Error)?.message || defaultLanguage.FAILURE.SOMETHING_WRONG
+            (await error as Error)?.message || defaultLanguage.FAILURE.SOMETHING_WRONG
           );
         } finally {
           setIsLoading(false);
