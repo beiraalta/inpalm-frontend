@@ -1,5 +1,8 @@
 services:
   inpalm-frontend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inpalm-frontend-dev  
     ports:
       - "4003:80"
