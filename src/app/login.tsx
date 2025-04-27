@@ -38,7 +38,7 @@ export default function LoginComponent() {
     <View style={[componentStyle.container, componentStyle.containerBgColor]}>
       {/* Logo Image */}
       <Image
-        source={require("../assets/images/inpalm-banner.png")}
+        source={require("../../assets/images/inpalm-banner.png")}
         style={componentStyle.imgBanner}
         resizeMode="contain"
       />

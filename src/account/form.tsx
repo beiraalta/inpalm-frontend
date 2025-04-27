@@ -9,7 +9,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function AccountFormComponent() {
+export function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const service = useMemo(() => new AccountService(), []);
   const schema = crud.isEditing ? AccountSchema : AddAccountSchema;

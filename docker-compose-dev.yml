@@ -3,6 +3,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: inpalm-frontend-dev  
+    container_name: inpalm-frontend-dev
+    image: inpalm-frontend:dev
     ports:
       - "4003:80"
+
+networks:
+  default:
+    external:
+      name: network-dev
