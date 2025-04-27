@@ -43,8 +43,8 @@ export default function HomeComponent() {
 
 const buttons = [
   { title: defaultLanguage.INFO.CHECKLISTS, icon: "checkbox-outline", url: "/protected/checklists", disable: false },
-  { title: defaultLanguage.INFO.PIECE_PENDINGS_SHORT, icon: "construct-outline", url: "/protected/piece-pendings", disable: false },
-  { title: defaultLanguage.INFO.PURCHASE_PENDINGS_SHORT, icon: "pricetag-outline", url: "/protected/purchase-pendings", disable: false },
+  // { title: defaultLanguage.INFO.PIECE_PENDINGS_SHORT, icon: "construct-outline", url: "/protected/piece-pendings", disable: false },
+  // { title: defaultLanguage.INFO.PURCHASE_PENDINGS_SHORT, icon: "pricetag-outline", url: "/protected/purchase-pendings", disable: false },
   { title: defaultLanguage.INFO.USERS, icon: "person-outline", url: "/protected/accounts", disable: false },
   // { title: "Grupos", icon: "people-outline", url: "/protected/groups", disable: true },
 ] as const;
