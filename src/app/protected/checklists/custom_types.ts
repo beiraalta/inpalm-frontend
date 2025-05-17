@@ -23,21 +23,60 @@ export const PurchasePendingSchema = z.object({
 });
 
 export const TechnicalReportSchema = z.object({
-  note: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   filepath: z.string().optional(),
+  finished_at: z.preprocess(
+    (arg) => {
+      if (arg === undefined || arg === null || arg === "") return null;
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg);
+      return null;
+    },
+    z
+      .date({
+        required_error: defaultLanguage.FAILURE.MANDATORY_FIELD,
+        invalid_type_error: defaultLanguage.FAILURE.MANDATORY_FIELD,
+      })
+      .refine((date) => !isNaN(date.getTime()), {
+        message: defaultLanguage.FAILURE.MANDATORY_FIELD,
+      })
+  ),
+  note: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   photo: z.string().optional(),
+  started_at: z.preprocess(
+    (arg) => {
+      if (arg === undefined || arg === null || arg === "") return null;
+      if (typeof arg === "string" || arg instanceof Date) return new Date(arg);
+      return null;
+    },
+    z
+      .date({
+        required_error: defaultLanguage.FAILURE.MANDATORY_FIELD,
+        invalid_type_error: defaultLanguage.FAILURE.MANDATORY_FIELD,
+      })
+      .refine((date) => !isNaN(date.getTime()), {
+        message: defaultLanguage.FAILURE.MANDATORY_FIELD,
+      })
+  ),
 });
+
 export type TechnicalReportType = z.infer<typeof TechnicalReportSchema>;
 
 export const ChecklistSchema = BaseSchema.extend({
-  assembly_team: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
-  customer: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  assembly_team: z
+    .string()
+    .min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  customer: z
+    .string()
+    .min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   delivery_responsible_pnc: z.string().optional(),
-  environments: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  environments: z
+    .string()
+    .min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   inspected_by: z.string().optional(),
   piece_pending_items: z.array(PiecePendingSchema).optional(),
   piece_pending_notes: z.string().optional(),
-  project_code: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  project_code: z
+    .string()
+    .min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   purchase_pending_items: z.array(PurchasePendingSchema).optional(),
   purchase_pending_notes: z.string().optional(),
   technical_reports: z.array(TechnicalReportSchema),

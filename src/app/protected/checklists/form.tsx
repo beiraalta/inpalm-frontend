@@ -7,6 +7,7 @@ import { crudAtom } from "./atom";
 import { CrudFormComponent } from "@/shared/components/crud/form";
 import { defaultLanguage } from "@/shared/constants/languages";
 import {
+  DateTimeField,
   DynamicListField,
   ImageField,
   InputField,
@@ -18,6 +19,7 @@ import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { isLoadingAtom } from "@/shared/components/spinner";
+import { fieldStyle } from "@/shared/components/fields/styles";
 
 export default function ChecklistFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
@@ -53,19 +55,28 @@ export default function ChecklistFormComponent() {
   });
 
   function onClickAddTechnicalReport() {
+    setIsLoading(true);
     const report = technicalReportForm.getValues();
     const reports = control._formValues.technical_reports;
     reports.push(report);
     setValue("technical_reports", reports);
-    technicalReportForm.reset({ note: "", photo: "" });
+    technicalReportForm.reset({
+      note: "",
+      photo: "",
+      started_at: "",
+      finished_at: "",
+    });
+    setIsLoading(false);
   }
 
   function onClickRemoveTechnicalReport(index: number) {
+    setIsLoading(true);
     const reports = getValues("technical_reports");
     setValue(
       "technical_reports",
       reports.filter((_, i) => i !== index)
     );
+    setIsLoading(false);
   }
 
   function setOnAdd() {
@@ -161,9 +172,10 @@ export default function ChecklistFormComponent() {
         isMultiline={true}
         path="environments"
       />
-
       <DynamicListField
-        onClickAddButton={onClickAddTechnicalReport}
+        onClickAddButton={technicalReportForm.handleSubmit(async (formData) => {
+          await onClickAddTechnicalReport();
+        })}
         control={control}
         nodes={
           <View>
@@ -179,6 +191,16 @@ export default function ChecklistFormComponent() {
               label={defaultLanguage.INFO.NOTE}
               path="note"
             />
+            <DateTimeField
+              control={technicalReportForm.control}
+              label={defaultLanguage.INFO.STARTED_AT}
+              path="started_at"
+            />
+            <DateTimeField
+              control={technicalReportForm.control}
+              label={defaultLanguage.INFO.FINISHED_AT}
+              path="finished_at"
+            />
           </View>
         }
         label={defaultLanguage.INFO.TECHNICAL_REPORTS}
@@ -187,18 +209,41 @@ export default function ChecklistFormComponent() {
           return (
             <View id={`technical-report-${index}`}>
               <View style={cardStyle.card}>
-                <View style={componentStyle.inlineContainer}>
+                <View style={{ marginBottom: 10 }}>
                   <Image
                     source={{ uri: item.photo }}
                     style={{
                       backgroundColor: "#f0f0f0",
                       borderRadius: 8,
-                      height: 50,
-                      marginRight: 15,
-                      width: 50,
+                      height: 100,
                     }}
                   />
+                </View>
+                <View>
+                  <Text style={fieldStyle.label}>
+                    {defaultLanguage.INFO.NOTE}
+                  </Text>
                   <Text style={{ textAlign: "justify" }}>{item.note}</Text>
+                </View>
+                <View style={componentStyle.inlineContainer}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={fieldStyle.label}>
+                      {defaultLanguage.INFO.STARTED_AT}
+                    </Text>
+                    <Text style={{ textAlign: "justify" }}>
+                      {new Date(item.started_at).toLocaleString()}
+                    </Text>
+                  </View>
+                </View>
+                <View style={componentStyle.inlineContainer}>
+                  <View style={{ flex: 1 }}>
+                    <Text style={fieldStyle.label}>
+                      {defaultLanguage.INFO.FINISHED_AT}
+                    </Text>
+                    <Text style={{ textAlign: "justify" }}>
+                      {new Date(item.finished_at).toLocaleString()}
+                    </Text>
+                  </View>
                 </View>
                 <View
                   style={{
