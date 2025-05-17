@@ -32,7 +32,7 @@ export default function HomeComponent() {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/inpalm-banner.png")}
+        source={require("../../../assets/images/inpalm-banner.png")}
         style={styles.logo}
         resizeMode="contain"
       />
@@ -43,10 +43,10 @@ export default function HomeComponent() {
 
 const buttons = [
   { title: defaultLanguage.INFO.CHECKLISTS, icon: "checkbox-outline", url: "/protected/checklists", disable: false },
-  { title: defaultLanguage.INFO.PIECE_PENDINGS_SHORT, icon: "construct-outline", url: "/protected/piece-pendings", disable: false },
-  { title: defaultLanguage.INFO.PURCHASE_PENDINGS_SHORT, icon: "pricetag-outline", url: "/protected/purchase-pendings", disable: false },
+  // { title: defaultLanguage.INFO.PIECE_PENDINGS_SHORT, icon: "construct-outline", url: "/protected/piece-pendings", disable: false },
+  // { title: defaultLanguage.INFO.PURCHASE_PENDINGS_SHORT, icon: "pricetag-outline", url: "/protected/purchase-pendings", disable: false },
   { title: defaultLanguage.INFO.USERS, icon: "person-outline", url: "/protected/accounts", disable: false },
-  // { title: "Grupos", icon: "people-outline", url: "/protected/groups", disable: true },
+  { title: defaultLanguage.INFO.ROLES, icon: "people-outline", url: "/protected/roles", disable: true },
 ] as const;
 
 export function GridScreen() {
@@ -68,7 +68,7 @@ export function GridScreen() {
         ))}
       </View>
       <View style={styles.row}>
-        {buttons.slice(2, 4).map((button) => (
+        {buttons.slice(2, 3).map((button) => (
           <GridButton
             title={button.title}
             icon={button.icon}

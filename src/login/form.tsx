@@ -8,8 +8,9 @@ import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import SHA512 from "crypto-js/sha512";
 
-export default function AccountFormComponent() {
+export function AccountFormComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const service = useMemo(() => new AccountService(), []);
   const schema = crud.isEditing ? AccountSchema : AddAccountSchema;
@@ -28,10 +29,11 @@ export default function AccountFormComponent() {
       ...previous,
       onAdd: async (formData) => {
         await service.initialize();
+        const password = SHA512(formData.password).toString();
         return await service.addAccount({
           name: formData.name,
           user: formData.user,
-          password: formData.password,
+          password: password,
         });
       },
     }));

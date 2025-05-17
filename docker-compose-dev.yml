@@ -1,13 +1,12 @@
-version: "3.8"
 services:
   inpalm-frontend:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inpalm-frontend-dev
+    image: inpalm-frontend:dev
     ports:
-      - "4003:8081"
-    volumes:
-      - .:/app
-    stdin_open: true
-    tty: true
+      - "4003:80"
 
 networks:
   default:

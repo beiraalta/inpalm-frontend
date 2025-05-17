@@ -5,7 +5,7 @@ import { defaultLanguage } from "@/shared/constants/languages";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
-export default function AccountComponent() {
+export function AccountComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
   const service = useMemo(() => new AccountService(), []);
 
