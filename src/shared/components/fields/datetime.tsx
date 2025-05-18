@@ -16,6 +16,11 @@ export default function DateTimeField<TFieldValues extends FieldValues>(
 ) {
   const [show, setShow] = useState(false);
 
+  const toLocalISOString = (date: Date) => {
+    const tzOffset = date.getTimezoneOffset() * 60000;
+    return new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+  };
+
   return (
     <Controller
       name={props.path}
@@ -36,13 +41,13 @@ export default function DateTimeField<TFieldValues extends FieldValues>(
                 style={fieldStyle.element}
                 value={
                   value
-                    ? new Date(value).toISOString().slice(0, 16)
+                    ? toLocalISOString(new Date(value))
                     : ""
                 }
                 onChange={(e) => {
                   const selected = new Date(e.target.value);
                   if (!isNaN(selected.getTime())) {
-                    onChange(selected.toISOString());
+                    onChange(toLocalISOString(selected));
                   }
                 }}
               />
