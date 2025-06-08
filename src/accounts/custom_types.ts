@@ -27,8 +27,3 @@ export const AddAccountSchema = BaseAccountSchema.extend({
   path: ["confirmPassword"],
 });
 export type AddAccountType = z.infer<typeof AddAccountSchema>;
-
-export type RoleType = {
-  id?: string;
-  accounts: ObjectIdNameType[];
-};
