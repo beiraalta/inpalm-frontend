@@ -1,13 +1,13 @@
-import { PurchasePendingService } from "./service";
 import { crudAtom } from "./atom";
 import { CrudComponent } from "@/shared/components/crud";
 import { defaultLanguage } from "@/shared/constants/languages";
+import { RoleService } from "./service";
 import { useAtom } from "jotai";
 import { useEffect, useMemo } from "react";
 
-export default function ChecklistComponent() {
+export function RoleComponent() {
   const [crud, setCrud] = useAtom(crudAtom);
-  const service = useMemo(() => new PurchasePendingService(), []);
+  const service = useMemo(() => new RoleService(), []);
 
   useEffect(() => {
     setOnFind();
@@ -19,7 +19,7 @@ export default function ChecklistComponent() {
       ...previous,
       onFind: async (searchParams) => {
         await service.initialize();
-        return await service.findPurchasePendings(searchParams);
+        return await service.findRoles(searchParams);
       },
     }));
   }
@@ -29,7 +29,7 @@ export default function ChecklistComponent() {
       ...previous,
       onRemove: async (targetValues) => {
         await service.initialize();
-        await service.removePurchasePendings(targetValues);
+        await service.removeRoles(targetValues);
       },
     }));
   }
@@ -37,16 +37,10 @@ export default function ChecklistComponent() {
   return (
     <CrudComponent
       crudAtom={crudAtom}
-      itemKeys={[
-        "customer",
-        "project_code",
-      ]}
-      itemNames={[
-        defaultLanguage.INFO.CUSTOMER,
-        defaultLanguage.INFO.PROJECT_CODE,
-      ]}
-      title={defaultLanguage.INFO.PURCHASE_PENDINGS}
-      urlForm="/protected/purchase-pendings/form"
+      itemKeys={["name"]}
+      itemNames={[defaultLanguage.INFO.NAME]}
+      title={defaultLanguage.INFO.ROLES}
+      urlForm="/protected/roles/form"
     />
   );
 }

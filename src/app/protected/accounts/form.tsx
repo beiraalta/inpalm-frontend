@@ -1,4 +1,4 @@
-import { AccountFormComponent } from "@/login/form";
+import { AccountFormComponent } from "@/accounts/form";
 
 export default function Page() {
   return <AccountFormComponent />;
