@@ -20,6 +20,15 @@ export const RoleSchema = BaseSchema.extend({
   default_policy: z.nativeEnum(RolePolicy),
   name: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
   policy_exceptions: z.array(ObjectIdNameSchema),
-  resource_policies: z.record(z.any())
+  resource_policies: z.any()
 });
 export type RoleType = z.infer<typeof RoleSchema>;
+
+export const RoleValidationSchema = BaseSchema.extend({
+  accounts: z.array(z.string()),
+  configs: z.array(ObjectIdNameSchema),
+  default_policy: z.nativeEnum(RolePolicy),
+  name: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
+  policy_exceptions: z.array(z.string()),
+  resource_policies: z.any()
+});
