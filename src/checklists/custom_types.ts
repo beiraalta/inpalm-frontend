@@ -40,7 +40,7 @@ export const TechnicalReportSchema = z.object({
       })
   ),
   note: z.string().min(1, { message: defaultLanguage.FAILURE.MANDATORY_FIELD }),
-  photo: z.string().optional(),
+  filebase64: z.string().optional(),
   started_at: z.preprocess(
     (arg) => {
       if (arg === undefined || arg === null || arg === "") return null;

@@ -47,7 +47,7 @@ export function ChecklistFormComponent() {
   const technicalReportForm = useForm({
     defaultValues: {
       note: "",
-      photo: "",
+      filebase64: "",
     },
     mode: "onSubmit",
     resolver: zodResolver(TechnicalReportSchema),
@@ -62,7 +62,7 @@ export function ChecklistFormComponent() {
     setValue("technical_reports", reports);
     technicalReportForm.reset({
       note: "",
-      photo: "",
+      filebase64: "",
       started_at: "",
       finished_at: "",
     });
@@ -182,7 +182,7 @@ export function ChecklistFormComponent() {
             <ImageField
               control={technicalReportForm.control}
               label={defaultLanguage.INFO.PHOTO}
-              path="photo"
+              path="filebase64"
             />
             <InputField
               control={technicalReportForm.control}
@@ -211,11 +211,11 @@ export function ChecklistFormComponent() {
               <View style={cardStyle.card}>
                 <View style={{ marginBottom: 10 }}>
                   <Image
-                    source={{ uri: item.photo }}
+                    source={{ uri: item.filebase64 }}
                     style={{
                       backgroundColor: "#f0f0f0",
                       borderRadius: 8,
-                      height: 100,
+                      height: 200,
                     }}
                   />
                 </View>
