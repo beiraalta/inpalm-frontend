@@ -10,5 +10,5 @@ services:
 
 networks:
   default:
-    external:
-      name: network-production
+    external: true
+    name: network-production

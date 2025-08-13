@@ -10,5 +10,5 @@ services:
 
 networks:
   default:
-    external:
-      name: network-dev
+    external: true
+    name: network-dev
