@@ -30,8 +30,10 @@ export default function ImageField<TFieldValues extends FieldValues>(
             onPress={async () =>
               await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: false,
-                quality: 1,
+                allowsEditing: true,
+                quality: 0.5,
+                aspect: [1, 1],
+                exif: false,
               }).then((result) => {
                 if (!result.canceled) {
                   const uri = result.assets[0].uri;

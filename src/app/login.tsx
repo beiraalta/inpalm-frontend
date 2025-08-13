@@ -10,8 +10,8 @@ import SHA512 from "crypto-js/sha512";
 
 export default function LoginComponent() {
   const [isLoading, setIsLoading] = useAtom(isLoadingAtom);
-  const [user, setUser] = useState("thiago.mennezes@gmail.com");
-  const [password, setPassword] = useState("12345");
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
 
   async function authenticate() {
